@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Wedding Photo</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Zen+Kaku+Gothic+New:wght@300;400;500&display=swap');
+
+  :root {
+    --cream: #FAF8F3;
+    --beige: #F2EDE4;
+    --beige2: #E8E0D4;
+    --gold: #B8915A;
+    --gold-light: #E8D5B0;
+    --dark: #2C2118;
+    --mid: #6B5744;
+    --sub: #9A876F;
+    --white: #FFFFFF;
+    --shadow: rgba(44,33,24,0.08);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+  html, body {
+    height: 100%; background: var(--cream);
+    font-family: 'Zen Kaku Gothic New', sans-serif;
+    color: var(--dark); overflow: hidden;
+  }
+
+  .screen { display: none; flex-direction: column; height: 100vh; overflow: hidden; }
+  .screen.active { display: flex; }
+
+  /* ── HEADER ── */
+  .hdr {
+    flex-shrink: 0;
+    text-align: center;
+    padding: 18px 20px 14px;
+    background: var(--cream);
+    border-bottom: 1px solid var(--beige2);
+    position: relative;
+  }
+  .hdr-ornament {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 11px; letter-spacing: 10px;
+    color: var(--gold); margin-bottom: 3px;
+  }
+  .hdr-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 13px; font-weight: 400;
+    letter-spacing: 4px; color: var(--mid);
+  }
+  .hdr-back {
+    position: absolute; left: 16px; top: 50%;
+    transform: translateY(-50%);
+    background: none; border: none;
+    color: var(--sub); font-size: 22px; cursor: pointer; padding: 4px;
+  }
+
+  /* ── WELCOME ── */
+  #screen-welcome {
+    background: var(--cream);
+    align-items: center;
+    justify-content: center;
+    padding: 0 28px;
+    gap: 0;
+  }
+  .welcome-monogram {
+    width: 96px; height: 96px; border-radius: 50%;
+    border: 1px solid var(--gold-light);
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 28px;
+    background: var(--beige);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 36px; font-style: italic;
+    color: var(--gold); letter-spacing: 2px;
+  }
+  .welcome-names {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 28px; font-weight: 300;
+    color: var(--dark); text-align: center;
+    letter-spacing: 2px; margin-bottom: 6px;
+  }
+  .welcome-date {
+    font-size: 12px; color: var(--sub);
+    letter-spacing: 3px; text-align: center;
+    margin-bottom: 6px;
+  }
+  .welcome-divider {
+    width: 40px; height: 1px; background: var(--gold-light);
+    margin: 16px auto;
+  }
+  .welcome-msg {
+    font-size: 13px; color: var(--mid); text-align: center;
+    line-height: 2; margin-bottom: 4px;
+  }
+  .table-chip {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: var(--gold-light); color: var(--dark);
+    font-size: 12px; padding: 5px 14px;
+    border-radius: 20px; margin: 14px 0 32px;
+    letter-spacing: 1px;
+  }
+  .btn-main {
+    width: 100%; padding: 15px;
+    background: var(--gold); color: var(--white);
+    border: none; border-radius: 4px; cursor: pointer;
+    font-family: 'Zen Kaku Gothic New', sans-serif;
+    font-size: 14px; font-weight: 400;
+    letter-spacing: 3px;
+    transition: opacity 0.15s, transform 0.1s;
+  }
+  .btn-main:active { opacity: 0.85; transform: scale(0.98); }
+  .btn-sub {
+    width: 100%; padding: 13px;
+    background: transparent; color: var(--mid);
+    border: 1px solid var(--beige2); border-radius: 4px; cursor: pointer;
+    font-family: 'Zen Kaku Gothic New', sans-serif;
+    font-size: 13px; letter-spacing: 2px;
+    margin-top: 10px;
+    transition: background 0.15s;
+  }
+  .btn-sub:active { background: var(--beige); }
+
+  /* ── CAMERA ── */
+  #screen-camera { background: #000; }
+  .viewfinder {
+    flex: 1; position: relative; overflow: hidden;
+    background: #1a1410; display: flex; align-items: center; justify-content: center;
+  }
+  .viewfinder video { width: 100%; height: 100%; object-fit: cover; }
+  .vf-corner { position: absolute; width: 22px; height: 22px; border-color: rgba(255,255,255,0.7); border-style: solid; }
+  .vf-tl { top: 16px; left: 16px; border-width: 1.5px 0 0 1.5px; }
+  .vf-tr { top: 16px; right: 16px; border-width: 1.5px 1.5px 0 0; }
+  .vf-bl { bottom: 16px; left: 16px; border-width: 0 0 1.5px 1.5px; }
+  .vf-br { bottom: 16px; right: 16px; border-width: 0 1.5px 1.5px 0; }
+  .flash { position: absolute; inset: 0; background: #fff; opacity: 0; pointer-events: none; transition: opacity 0.05s; }
+  .no-cam {
+    color: rgba(255,255,255,0.45); font-size: 13px;
+    text-align: center; line-height: 2; padding: 20px; display: none;
+  }
+
+  .cam-controls {
+    flex-shrink: 0;
+    background: #0f0c09;
+    padding: 20px 24px 32px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .shot-info { text-align: center; }
+  .shot-num { font-size: 30px; font-weight: 300; color: #fff; line-height: 1; font-family: 'Cormorant Garamond', serif; }
+  .shot-lbl { font-size: 10px; color: rgba(255,255,255,0.4); letter-spacing: 2px; margin-top: 2px; }
+  .shutter {
+    width: 68px; height: 68px; border-radius: 50%;
+    border: 2px solid var(--gold);
+    background: transparent;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    transition: transform 0.1s;
+    position: relative;
+  }
+  .shutter:active { transform: scale(0.92); }
+  .shutter-inner { width: 52px; height: 52px; border-radius: 50%; background: var(--gold); }
+  .shutter:disabled { opacity: 0.3; pointer-events: none; }
+
+  .thumb-btn {
+    width: 48px; height: 48px; border-radius: 6px;
+    background: #2a2018; border: 1px solid #3a3028;
+    overflow: hidden; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    color: rgba(255,255,255,0.3); font-size: 20px;
+  }
+  .thumb-btn img { width: 100%; height: 100%; object-fit: cover; }
+
+  /* ── GALLERY ── */
+  #screen-gallery { background: var(--cream); }
+  .gallery-scroll { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; }
+  .gallery-stats {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 8px; padding: 12px 14px;
+  }
+  .stat-card {
+    background: var(--beige); border-radius: 6px;
+    padding: 10px 8px; text-align: center;
+  }
+  .stat-n { font-family: 'Cormorant Garamond', serif; font-size: 24px; font-weight: 300; color: var(--dark); line-height: 1; }
+  .stat-l { font-size: 10px; color: var(--sub); letter-spacing: 0.5px; margin-top: 3px; }
+
+  .gallery-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 2px; padding: 0 2px 20px;
+  }
+  .g-item {
+    aspect-ratio: 1; overflow: hidden; cursor: pointer;
+    background: var(--beige2); position: relative;
+  }
+  .g-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.2s; }
+  .g-item:active img { transform: scale(0.97); }
+  .g-meta {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    background: linear-gradient(transparent, rgba(0,0,0,0.35));
+    font-size: 9px; color: rgba(255,255,255,0.85);
+    text-align: right; padding: 10px 4px 3px;
+  }
+  .gallery-empty {
+    padding: 60px 24px; text-align: center;
+    color: var(--sub); font-size: 13px; line-height: 2.2;
+    grid-column: 1 / -1;
+  }
+  .gallery-empty .icon { font-size: 36px; color: var(--gold-light); display: block; margin-bottom: 12px; }
+
+  /* ── LIGHTBOX ── */
+  .lightbox {
+    display: none; position: fixed; inset: 0; z-index: 200;
+    background: rgba(20,14,8,0.94);
+    flex-direction: column; align-items: center; justify-content: center;
+    padding: 20px;
+  }
+  .lightbox.open { display: flex; }
+  .lightbox img { max-width: 100%; max-height: 72vh; border-radius: 4px; }
+  .lb-meta { color: rgba(255,255,255,0.5); font-size: 11px; margin-top: 10px; letter-spacing: 1px; }
+  .lb-close {
+    position: absolute; top: 18px; right: 18px;
+    background: rgba(255,255,255,0.1); border: none;
+    color: #fff; width: 36px; height: 36px; border-radius: 50%;
+    cursor: pointer; font-size: 18px;
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  /* ── BOTTOM NAV ── */
+  .bnav {
+    flex-shrink: 0;
+    display: flex; background: var(--cream);
+    border-top: 1px solid var(--beige2);
+    padding: 8px 0 env(safe-area-inset-bottom, 8px);
+  }
+  .bnav-btn {
+    flex: 1; display: flex; flex-direction: column;
+    align-items: center; gap: 3px;
+    background: none; border: none; cursor: pointer;
+    color: var(--sub); font-size: 10px; letter-spacing: 1px;
+    padding: 6px 0;
+    font-family: 'Zen Kaku Gothic New', sans-serif;
+  }
+  .bnav-btn svg { width: 22px; height: 22px; stroke: currentColor; fill: none; stroke-width: 1.5; }
+  .bnav-btn.active { color: var(--gold); }
+
+  /* ── UPLOAD STATE ── */
+  .uploading-overlay {
+    position: absolute; inset: 0; background: rgba(20,14,8,0.6);
+    display: none; align-items: center; justify-content: center; z-index: 10;
+  }
+  .uploading-overlay.show { display: flex; }
+  .upload-spinner {
+    width: 40px; height: 40px; border-radius: 50%;
+    border: 2px solid rgba(255,255,255,0.2);
+    border-top-color: var(--gold);
+    animation: spin 0.8s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* ── TOAST ── */
+  .toast {
+    position: fixed; bottom: 90px; left: 50%;
+    transform: translateX(-50%);
+    background: var(--dark); color: #fff;
+    padding: 9px 18px; border-radius: 20px;
+    font-size: 12px; letter-spacing: 0.5px;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.25s; z-index: 300;
+    white-space: nowrap;
+  }
+  .toast.show { opacity: 1; }
+
+  canvas#snap { display: none; }
+</style>
+</head>
+<body>
+
+<!-- ══ WELCOME ══ -->
+<div id="screen-welcome" class="screen active">
+  <div class="hdr">
+    <div class="hdr-ornament">✦ &nbsp; ✦ &nbsp; ✦</div>
+    <div class="hdr-title">WEDDING PHOTO</div>
+  </div>
+  <div style="flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; padding: 0 28px 40px;">
+    <div class="welcome-monogram">K&amp;Y</div>
+    <div class="welcome-names">Kenji &amp; Yuki</div>
+    <div class="welcome-date">2026 · 06 · 14</div>
+    <div class="welcome-divider"></div>
+    <div class="welcome-msg">ご来場ありがとうございます<br>大切な瞬間を一緒に残しましょう</div>
+    <div class="table-chip" id="table-chip">テーブル 1 · 席 A</div>
+    <button class="btn-main" onclick="startCamera()">撮　影　を　は　じ　め　る</button>
+    <button class="btn-sub" onclick="showGallery()">みんなの写真を見る</button>
+  </div>
+</div>
+
+<!-- ══ CAMERA ══ -->
+<div id="screen-camera" class="screen">
+  <div class="viewfinder" id="vf">
+    <video id="vid" autoplay playsinline muted></video>
+    <div class="no-cam" id="no-cam">カメラへのアクセスを<br>許可してください<br><br><span style="font-size:11px;opacity:0.6">（デモモード動作中）</span></div>
+    <div class="vf-corner vf-tl"></div>
+    <div class="vf-corner vf-tr"></div>
+    <div class="vf-corner vf-bl"></div>
+    <div class="vf-corner vf-br"></div>
+    <div class="flash" id="flash"></div>
+    <div class="uploading-overlay" id="uploading">
+      <div class="upload-spinner"></div>
+    </div>
+  </div>
+  <div class="cam-controls">
+    <div class="shot-info">
+      <div class="shot-num" id="shots-left">25</div>
+      <div class="shot-lbl">残り枚数</div>
+    </div>
+    <button class="shutter" id="shutter-btn" onclick="takePhoto()" aria-label="撮影">
+      <div class="shutter-inner"></div>
+    </button>
+    <button class="thumb-btn" id="thumb-btn" onclick="showGallery()" aria-label="ギャラリー">
+      <svg viewBox="0 0 24 24" stroke="currentColor"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9l4-4 4 4 4-6 6 6"/></svg>
+    </button>
+  </div>
+  <nav class="bnav">
+    <button class="bnav-btn" onclick="showScreen('welcome')">
+      <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>ホーム
+    </button>
+    <button class="bnav-btn active">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M20.94 13A9 9 0 1011 3.06"/><path d="M2 2l20 20"/></svg>カメラ
+    </button>
+    <button class="bnav-btn" onclick="showGallery()">
+      <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>ギャラリー
+    </button>
+  </nav>
+</div>
+
+<!-- ══ GALLERY ══ -->
+<div id="screen-gallery" class="screen">
+  <div class="hdr">
+    <button class="hdr-back" onclick="showScreen('welcome')" aria-label="戻る">←</button>
+    <div class="hdr-ornament">✦ &nbsp; ✦ &nbsp; ✦</div>
+    <div class="hdr-title">GALLERY</div>
+  </div>
+  <div class="gallery-scroll">
+    <div class="gallery-stats" id="gallery-stats"></div>
+    <div class="gallery-grid" id="gallery-grid">
+      <div class="gallery-empty">
+        <span class="icon">✦</span>
+        まだ写真がありません<br>最初の一枚を撮りましょう
+      </div>
+    </div>
+  </div>
+  <nav class="bnav">
+    <button class="bnav-btn" onclick="showScreen('welcome')">
+      <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>ホーム
+    </button>
+    <button class="bnav-btn" onclick="startCamera()">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M20.94 13A9 9 0 1011 3.06"/></svg>カメラ
+    </button>
+    <button class="bnav-btn active">
+      <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>ギャラリー
+    </button>
+  </nav>
+</div>
+
+<!-- ══ LIGHTBOX ══ -->
+<div class="lightbox" id="lightbox" onclick="closeLb()">
+  <button class="lb-close" aria-label="閉じる">✕</button>
+  <img id="lb-img" src="" alt="写真拡大">
+  <div class="lb-meta" id="lb-meta"></div>
+</div>
+
+<div class="toast" id="toast"></div>
+<canvas id="snap"></canvas>
+
+<script>
+  // ══════════════════════════════════════════
+  //  設定（ここだけ変更すればOK）
+  // ══════════════════════════════════════════
+  const CLOUDINARY_CLOUD = 'dd528t1sx';
+  const CLOUDINARY_PRESET = 'wedding_upload';
+  const MAX_SHOTS = 25;
+
+  // URLパラメータから席情報を取得
+  const params = new URLSearchParams(location.search);
+  const TABLE = params.get('table') || '1';
+  const SEAT  = params.get('seat')  || 'A';
+  const SEAT_ID = `table${TABLE}-seat${SEAT}`;
+
+  // ══════════════════════════════════════════
+  //  状態管理
+  // ══════════════════════════════════════════
+  let stream = null;
+  let demoMode = false;
+  let shotsLeft = MAX_SHOTS;
+  let photos = []; // { url, table, seat, time }
+
+  // LocalStorageから残り枚数を復元
+  function loadShotCount() {
+    const saved = localStorage.getItem('shots-' + SEAT_ID);
+    shotsLeft = saved !== null ? parseInt(saved) : MAX_SHOTS;
+  }
+  function saveShotCount() {
+    localStorage.setItem('shots-' + SEAT_ID, String(shotsLeft));
+  }
+
+  // ══════════════════════════════════════════
+  //  初期化
+  // ══════════════════════════════════════════
+  loadShotCount();
+  document.getElementById('table-chip').textContent = `テーブル ${TABLE} · 席 ${SEAT}`;
+
+  // ══════════════════════════════════════════
+  //  画面切替
+  // ══════════════════════════════════════════
+  function showScreen(id) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById('screen-' + id).classList.add('active');
+    if (id !== 'camera' && stream) {
+      stream.getTracks().forEach(t => t.stop());
+      stream = null;
+    }
+  }
+
+  // ══════════════════════════════════════════
+  //  カメラ
+  // ══════════════════════════════════════════
+  async function startCamera() {
+    showScreen('camera');
+    updateCounter();
+    const vid = document.getElementById('vid');
+    try {
+      stream = await navigator.mediaDevices.getUserMedia({
+        video: { facingMode: 'environment', width: { ideal: 1280 }, height: { ideal: 960 } },
+        audio: false
+      });
+      vid.srcObject = stream;
+      vid.style.display = 'block';
+      document.getElementById('no-cam').style.display = 'none';
+      demoMode = false;
+    } catch(e) {
+      vid.style.display = 'none';
+      document.getElementById('no-cam').style.display = 'block';
+      demoMode = true;
+    }
+  }
+
+  function updateCounter() {
+    document.getElementById('shots-left').textContent = shotsLeft;
+    const btn = document.getElementById('shutter-btn');
+    btn.disabled = shotsLeft <= 0;
+  }
+
+  // ══════════════════════════════════════════
+  //  撮影 → Cloudinaryアップロード
+  // ══════════════════════════════════════════
+  async function takePhoto() {
+    if (shotsLeft <= 0) { toast('撮影枚数の上限（25枚）に達しました'); return; }
+
+    // フラッシュ演出
+    const flash = document.getElementById('flash');
+    flash.style.opacity = '1';
+    setTimeout(() => { flash.style.opacity = '0'; }, 80);
+
+    // キャプチャ
+    let blob;
+    if (!demoMode) {
+      const vid = document.getElementById('vid');
+      const cv = document.getElementById('snap');
+      cv.width = vid.videoWidth || 1280;
+      cv.height = vid.videoHeight || 960;
+      cv.getContext('2d').drawImage(vid, 0, 0);
+      blob = await new Promise(r => cv.toBlob(r, 'image/jpeg', 0.85));
+    } else {
+      blob = makeDemoBlob();
+    }
+
+    // アップロード中UI
+    document.getElementById('uploading').classList.add('show');
+    document.getElementById('shutter-btn').disabled = true;
+
+    try {
+      const url = await uploadToCloudinary(blob);
+      shotsLeft--;
+      saveShotCount();
+      updateCounter();
+
+      // サムネイル更新
+      const objUrl = URL.createObjectURL(blob);
+      const tb = document.getElementById('thumb-btn');
+      tb.innerHTML = `<img src="${objUrl}" alt="最新写真">`;
+
+      // photos配列に追加（ギャラリー用）
+      photos.unshift({
+        url,
+        table: TABLE, seat: SEAT,
+        time: new Date().toLocaleTimeString('ja-JP', { hour: '2-digit', minute: '2-digit' })
+      });
+
+      toast(`撮影しました ✦ 残り ${shotsLeft} 枚`);
+    } catch(e) {
+      toast('アップロードに失敗しました。再試行してください。');
+    } finally {
+      document.getElementById('uploading').classList.remove('show');
+      if (shotsLeft > 0) document.getElementById('shutter-btn').disabled = false;
+    }
+  }
+
+  async function uploadToCloudinary(blob) {
+    const fd = new FormData();
+    fd.append('file', blob, 'photo.jpg');
+    fd.append('upload_preset', CLOUDINARY_PRESET);
+    fd.append('folder', `wedding/table${TABLE}`);
+    fd.append('tags', `table${TABLE},seat${SEAT}`);
+
+    const res = await fetch(
+      `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD}/image/upload`,
+      { method: 'POST', body: fd }
+    );
+    if (!res.ok) throw new Error('upload failed');
+    const data = await res.json();
+    return data.secure_url;
+  }
+
+  // ══════════════════════════════════════════
+  //  ギャラリー（Cloudinaryから取得）
+  // ══════════════════════════════════════════
+  async function showGallery() {
+    showScreen('gallery');
+    renderGallery();
+    fetchCloudinaryPhotos(); // バックグラウンドで最新取得
+  }
+
+  async function fetchCloudinaryPhotos() {
+    // Cloudinaryのギャラリーは管理APIが必要なため、
+    // 今セッション中に撮影した写真を表示
+    // 本番ではFirestoreやCloudinary Admin APIと組み合わせて全員の写真を取得
+    renderGallery();
+  }
+
+  function renderGallery() {
+    const grid = document.getElementById('gallery-grid');
+    const stats = document.getElementById('gallery-stats');
+
+    const myCount = photos.filter(p => p.table === TABLE && p.seat === SEAT).length;
+    stats.innerHTML = `
+      <div class="stat-card"><div class="stat-n">${photos.length}</div><div class="stat-l">今セッション</div></div>
+      <div class="stat-card"><div class="stat-n">${myCount}</div><div class="stat-l">あなたの席</div></div>
+      <div class="stat-card"><div class="stat-n">${shotsLeft}</div><div class="stat-l">残り枚数</div></div>
+    `;
+
+    if (photos.length === 0) {
+      grid.innerHTML = `<div class="gallery-empty"><span class="icon">✦</span>まだ写真がありません<br>最初の一枚を撮りましょう</div>`;
+      return;
+    }
+
+    grid.innerHTML = photos.map((p, i) => `
+      <div class="g-item" onclick="openLb(${i})">
+        <img src="${p.url}" alt="写真" loading="lazy">
+        <div class="g-meta">${p.time}</div>
+      </div>
+    `).join('');
+  }
+
+  // ══════════════════════════════════════════
+  //  ライトボックス
+  // ══════════════════════════════════════════
+  function openLb(i) {
+    const p = photos[i];
+    document.getElementById('lb-img').src = p.url;
+    document.getElementById('lb-meta').textContent = `テーブル ${p.table} · 席 ${p.seat} · ${p.time}`;
+    document.getElementById('lightbox').classList.add('open');
+  }
+  function closeLb() { document.getElementById('lightbox').classList.remove('open'); }
+
+  // ══════════════════════════════════════════
+  //  トースト
+  // ══════════════════════════════════════════
+  let toastTimer;
+  function toast(msg) {
+    const el = document.getElementById('toast');
+    el.textContent = msg;
+    el.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => el.classList.remove('show'), 2400);
+  }
+
+  // ══════════════════════════════════════════
+  //  デモ用ブロブ生成
+  // ══════════════════════════════════════════
+  function makeDemoBlob() {
+    const cv = document.getElementById('snap');
+    cv.width = 800; cv.height = 1000;
+    const ctx = cv.getContext('2d');
+    const palettes = [
+      ['#F5ECD7','#B8915A'],['#E8F0DE','#5A8C5E'],
+      ['#EDE0F0','#8B5E9A'],['#FDE8E0','#C4745A'],['#E0EDF5','#5A8CA4']
+    ];
+    const [bg, fg] = palettes[photos.length % palettes.length];
+    ctx.fillStyle = bg; ctx.fillRect(0,0,800,1000);
+    ctx.fillStyle = fg;
+    ctx.font = '120px serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    const emojis = ['🌸','🥂','💐','🎊','💍','🕊️','🍰','✨'];
+    ctx.fillText(emojis[photos.length % emojis.length], 400, 380);
+    ctx.font = '500 28px sans-serif';
+    ctx.fillText(`テーブル ${TABLE} · 席 ${SEAT}`, 400, 530);
+    ctx.font = '20px sans-serif'; ctx.globalAlpha = 0.6;
+    ctx.fillText(new Date().toLocaleString('ja-JP'), 400, 580);
+    return new Promise(r => cv.toBlob(r, 'image/jpeg', 0.85))
+      .then ? new Promise(r => cv.toBlob(r, 'image/jpeg', 0.85)) : null;
+  }
+
+  // makeDemoBlobをsyncに修正
+  function makeDemoBlob() {
+    const cv = document.getElementById('snap');
+    cv.width = 800; cv.height = 1000;
+    const ctx = cv.getContext('2d');
+    const palettes = [
+      ['#F5ECD7','#B8915A'],['#E8F0DE','#5A8C5E'],
+      ['#EDE0F0','#8B5E9A'],['#FDE8E0','#C4745A'],['#E0EDF5','#5A8CA4']
+    ];
+    const [bg, fg] = palettes[photos.length % palettes.length];
+    ctx.fillStyle = bg; ctx.fillRect(0,0,800,1000);
+    ctx.fillStyle = fg;
+    ctx.font = '120px serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    const emojis = ['🌸','🥂','💐','🎊','💍','🕊️','🍰','✨'];
+    ctx.fillText(emojis[photos.length % emojis.length], 400, 380);
+    ctx.font = '500 28px sans-serif';
+    ctx.fillText(`テーブル ${TABLE} · 席 ${SEAT}`, 400, 530);
+    ctx.font = '20px sans-serif'; ctx.globalAlpha = 0.6;
+    ctx.fillText(new Date().toLocaleString('ja-JP'), 400, 580);
+    // syncでDataURLからBlobを作成
+    const dataURL = cv.toDataURL('image/jpeg', 0.85);
+    const bin = atob(dataURL.split(',')[1]);
+    const arr = new Uint8Array(bin.length);
+    for(let i=0;i<bin.length;i++) arr[i]=bin.charCodeAt(i);
+    return new Blob([arr], {type:'image/jpeg'});
+  }
+</script>
+</body>
+</html>
