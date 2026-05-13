@@ -37,7 +37,9 @@
   .welcome-date { font-size: 12px; color: var(--sub); letter-spacing: 3px; text-align: center; margin-bottom: 6px; }
   .welcome-divider { width: 40px; height: 1px; background: var(--gold-light); margin: 16px auto; }
   .welcome-msg { font-size: 13px; color: var(--mid); text-align: center; line-height: 2; margin-bottom: 4px; }
-  .table-chip { display: inline-flex; align-items: center; gap: 6px; background: var(--gold-light); color: var(--dark); font-size: 12px; padding: 5px 14px; border-radius: 20px; margin: 14px 0 32px; letter-spacing: 1px; }
+  .table-chip { display: inline-flex; align-items: center; gap: 6px; background: var(--gold-light); color: var(--dark); font-size: 12px; padding: 5px 14px; border-radius: 20px; margin: 14px 0 16px; letter-spacing: 1px; }
+  .welcome-guide { width: 100%; background: var(--beige); border: 1px solid var(--beige2); border-radius: 8px; padding: 12px 16px; font-size: 12px; color: var(--mid); text-align: center; line-height: 2; margin-bottom: 20px; }
+  .guide-num { font-family: 'Cormorant Garamond', serif; font-size: 16px; color: var(--gold); font-weight: 500; margin: 0 2px; }
   .btn-main { width: 100%; padding: 15px; background: var(--gold); color: var(--white); border: none; border-radius: 4px; cursor: pointer; font-family: 'Zen Kaku Gothic New', sans-serif; font-size: 14px; letter-spacing: 3px; transition: opacity 0.15s; }
   .btn-main:active { opacity: 0.85; }
   .btn-sub { width: 100%; padding: 13px; background: transparent; color: var(--mid); border: 1px solid var(--beige2); border-radius: 4px; cursor: pointer; font-family: 'Zen Kaku Gothic New', sans-serif; font-size: 13px; letter-spacing: 2px; margin-top: 10px; transition: background 0.15s; }
@@ -112,12 +114,17 @@
     <div class="hdr-title">WEDDING PHOTO</div>
   </div>
   <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 28px 40px;">
-    <div class="welcome-monogram">K&amp;Y</div>
-    <div class="welcome-names">Kenji &amp; Yuki</div>
-    <div class="welcome-date">2026 · 06 · 14</div>
+    <div class="welcome-monogram">S&amp;T</div>
+    <div class="welcome-names">Saaya &amp; Toshiki</div>
+    <div class="welcome-date" id="today-date"></div>
     <div class="welcome-divider"></div>
     <div class="welcome-msg">ご来場ありがとうございます<br>大切な瞬間を一緒に残しましょう</div>
     <div class="table-chip" id="table-chip">テーブル 1 · 席 A</div>
+    <div class="welcome-guide">
+      各席にあるQRコードを読み取ると<br>
+      おひとり<span class="guide-num">25枚</span>まで写真が撮れます。<br>
+      撮影した写真はみんなで共有されます。
+    </div>
     <button class="btn-main" onclick="startCamera()">撮　影　を　は　じ　め　る</button>
     <button class="btn-sub" onclick="showGallery()">みんなの写真を見る</button>
   </div>
@@ -221,6 +228,25 @@
 
   // 初期化
   document.getElementById('table-chip').textContent = `テーブル ${TABLE} · 席 ${SEAT}`;
+
+  // 今日の日付を取得して表示
+  (async () => {
+    try {
+      const res = await fetch('https://worldtimeapi.org/api/timezone/Asia/Tokyo');
+      const data = await res.json();
+      const d = new Date(data.datetime);
+      const y = d.getFullYear();
+      const m = String(d.getMonth() + 1).padStart(2, '0');
+      const day = String(d.getDate()).padStart(2, '0');
+      document.getElementById('today-date').textContent = `${y} · ${m} · ${day}`;
+    } catch(e) {
+      const d = new Date();
+      const y = d.getFullYear();
+      const m = String(d.getMonth() + 1).padStart(2, '0');
+      const day = String(d.getDate()).padStart(2, '0');
+      document.getElementById('today-date').textContent = `${y} · ${m} · ${day}`;
+    }
+  })();
   updateCounter();
 
   function updateCounter() {
