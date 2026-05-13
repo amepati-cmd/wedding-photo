@@ -91,6 +91,8 @@
   .lightbox img { max-width: 100%; max-height: 72vh; border-radius: 4px; }
   .lb-meta { color: rgba(255,255,255,0.5); font-size: 11px; margin-top: 10px; letter-spacing: 1px; }
   .lb-close { position: absolute; top: 18px; right: 18px; background: rgba(255,255,255,0.1); border: none; color: #fff; width: 36px; height: 36px; border-radius: 50%; cursor: pointer; font-size: 18px; display: flex; align-items: center; justify-content: center; }
+  .lb-delete { margin-top: 14px; padding: 9px 22px; background: rgba(180,60,60,0.85); color: #fff; border: none; border-radius: 20px; cursor: pointer; font-size: 12px; font-family: 'Zen Kaku Gothic New', sans-serif; letter-spacing: 1px; transition: opacity 0.15s; }
+  .lb-delete:active { opacity: 0.8; }
 
   /* BOTTOM NAV */
   .bnav { flex-shrink: 0; display: flex; background: var(--cream); border-top: 1px solid var(--beige2); padding: 8px 0 env(safe-area-inset-bottom, 8px); }
@@ -194,10 +196,13 @@
 </div>
 
 <!-- LIGHTBOX -->
-<div class="lightbox" id="lightbox" onclick="closeLb()">
-  <button class="lb-close" aria-label="閉じる">✕</button>
-  <img id="lb-img" src="" alt="写真拡大">
+<div class="lightbox" id="lightbox">
+  <button class="lb-close" onclick="closeLb()" aria-label="閉じる">✕</button>
+  <img id="lb-img" src="" alt="写真拡大" onclick="closeLb()">
   <div class="lb-meta" id="lb-meta"></div>
+  <button class="lb-delete" id="lb-delete" onclick="deletePhoto()" style="display:none">
+    🗑 この写真を削除する
+  </button>
 </div>
 
 <div class="toast" id="toast"></div>
@@ -309,7 +314,7 @@
     document.getElementById('shutter-btn').disabled = true;
 
     try {
-      const url = await uploadToCloudinary(blob);
+      const { url, public_id } = await uploadToCloudinary(blob);
       const newShots = shotsLeft - 1;
       saveShotsLeft(newShots);
       updateCounter();
@@ -319,9 +324,10 @@
       tb.innerHTML = `<img src="${objUrl}" alt="最新写真">`;
 
       allPhotos.unshift({
-        url,
+        url, public_id,
         table: TABLE, seat: SEAT,
-        time: new Date().toLocaleTimeString('ja-JP', { hour: '2-digit', minute: '2-digit' })
+        time: new Date().toLocaleTimeString('ja-JP', { hour: '2-digit', minute: '2-digit' }),
+        mine: true
       });
 
       toast(`撮影しました ✦ 残り ${newShots} 枚`);
@@ -345,7 +351,7 @@
     );
     if (!res.ok) throw new Error('upload failed');
     const data = await res.json();
-    return data.secure_url;
+    return { url: data.secure_url, public_id: data.public_id };
   }
 
   async function showGallery() {
@@ -360,10 +366,12 @@
     try {
       const res = await fetch('/api/photos');
       const data = await res.json();
-      allPhotos = data.photos || [];
+      allPhotos = (data.photos || []).map(p => ({
+        ...p,
+        mine: p.table === TABLE && p.seat === SEAT
+      }));
       renderGallery();
     } catch(e) {
-      // APIが使えない場合は今セッションの写真だけ表示
       renderGallery();
     }
   }
@@ -387,18 +395,45 @@
     grid.innerHTML = allPhotos.map((p, i) => `
       <div class="g-item" onclick="openLb(${i})">
         <img src="${p.url}" alt="写真" loading="lazy">
-        <div class="g-meta">${p.time}</div>
+        <div class="g-meta">${p.mine ? '✦ ' : ''}${p.time}</div>
       </div>
     `).join('');
   }
 
+  let currentLbIndex = -1;
+
   function openLb(i) {
+    currentLbIndex = i;
     const p = allPhotos[i];
     document.getElementById('lb-img').src = p.url;
     document.getElementById('lb-meta').textContent = `テーブル ${p.table} · 席 ${p.seat} · ${p.time}`;
+    const delBtn = document.getElementById('lb-delete');
+    delBtn.style.display = p.mine ? 'block' : 'none';
     document.getElementById('lightbox').classList.add('open');
   }
   function closeLb() { document.getElementById('lightbox').classList.remove('open'); }
+
+  async function deletePhoto() {
+    if (currentLbIndex < 0) return;
+    const p = allPhotos[currentLbIndex];
+    if (!p.mine) return;
+    if (!confirm('この写真を削除しますか？\n（撮影枚数は復活しません）')) return;
+
+    try {
+      const res = await fetch('/api/delete', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ public_id: p.public_id })
+      });
+      if (!res.ok) throw new Error();
+      allPhotos.splice(currentLbIndex, 1);
+      closeLb();
+      renderGallery();
+      toast('写真を削除しました');
+    } catch(e) {
+      toast('削除に失敗しました。もう一度お試しください。');
+    }
+  }
 
   let toastTimer;
   function toast(msg) {
