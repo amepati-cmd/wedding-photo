@@ -20,6 +20,7 @@ module.exports = async (req, res) => {
 
     const photos = result.resources.map(r => ({
       url: r.secure_url,
+      public_id: r.public_id,
       table: (r.tags.find(t => t.startsWith('table')) || '').replace('table', ''),
       seat: (r.tags.find(t => t.startsWith('seat')) || '').replace('seat', ''),
       time: new Date(r.created_at).toLocaleTimeString('ja-JP', { hour: '2-digit', minute: '2-digit' }),
