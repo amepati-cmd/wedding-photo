@@ -2,467 +2,812 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <title>Wedding Photo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DotGothic16&family=Silkscreen:wght@400;700&display=swap">
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Zen+Kaku+Gothic+New:wght@300;400;500&display=swap');
-
+  /* 8bit調。角丸なし・硬い影・写真から起こした16色パレット */
   :root {
-    --cream: #FAF8F3;
-    --beige: #F2EDE4;
-    --beige2: #E8E0D4;
-    --gold: #B8915A;
-    --gold-light: #E8D5B0;
-    --dark: #2C2118;
-    --mid: #6B5744;
-    --sub: #9A876F;
+    --ink:   #2A231E;
+    --ink2:  #453A31;
+    --shade: #635649;
+    --mid:   #827566;
+    --warm:  #9E9282;
+    --warm2: #B7AC9C;
+    --pale:  #CBC2B3;
+    --pale2: #DCD4C7;
+    --cream: #F6EDDF;
+    --paper: #FDF8F0;
     --white: #FFFFFF;
+    --gold:  #E8B555;
+    --gold2: #F7E3B4;
+    --rose:  #EE9098;
+    --rose2: #FBDCDF;
+    --mint:  #A8C89E;
+    --sky:   #BFD8E6;
+    --px: 'DotGothic16', 'Hiragino Kaku Gothic ProN', monospace;
+    --dp: 'Silkscreen', 'DotGothic16', monospace;
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-  html, body { height: 100%; background: var(--cream); font-family: 'Zen Kaku Gothic New', sans-serif; color: var(--dark); overflow: hidden; }
+  html, body {
+    height: 100%; overflow: hidden;
+    font-family: var(--px); color: var(--ink);
+    background-color: var(--paper);
+    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAIAAAAlC+aJAAABxUlEQVR42u1aPUvEQBDdC0Ehh62FXBGusLeTK3Kdv8TfYXG/w19ynRZy3fUWYnFYXHVwRFQQLAaGJYlmNzuzH3GGFHMQyHv7sjszLzf5/jiolCNTiQcBgcfXd1GgOx5ennrvmbjsgcbaV2VBi363383OZ8v5wk6Br+c3uHqfUZUFgMaEED3gXs4Xf+uQtdF35p4DcSMTIwKA+LO+h8uQA+3auypAG/V6U683esKrADn63xJDDr07uOMUarwzJ5cX7gT0mN5c89YBHbEL+k6s5Ohd64CVDhzofVRiwM2E3ocC0o0KASEgBAgJHLer43bVzj2HPofkVujPru4gUUphDkmoyNN6YXDtIanKwq6QNdYec/80cAgJVomx7R3QMoYnQNi0ByCAgyv8PJ3eunCQQhY6kt8DYRQgHFxloBECxARMHO14CYCjnRaHTEdv6KfGWwcMvymMUIHBLnQUCvgxcY02saGjPcJeqCGCt+UnK2Q6Yp/oKSsxtwudTDNnOytncaJXxh95I1Jg2Kws7fT/nIkJZ+W4FBgwK49oJub2/pn+2JUj4gi9fwsCrNE29VlOIW7vX/fEkzxGkycglVgICAEhMEoCPy7KQeuB5tqnAAAAAElFTkSuQmCC);     /* 小花・ハート・指輪のドット柄 */
+    background-size: 64px 64px;
+    image-rendering: pixelated;
+  }
+  img { image-rendering: pixelated; }
+  svg { shape-rendering: crispEdges; }
 
-  .screen { display: none; flex-direction: column; height: 100vh; overflow: hidden; }
+  .screen { display: none; flex-direction: column; height: 100%; overflow: hidden; position: relative; z-index: 1; }
   .screen.active { display: flex; }
 
-  .hdr { flex-shrink: 0; text-align: center; padding: 18px 20px 14px; background: var(--cream); border-bottom: 1px solid var(--beige2); position: relative; }
-  .hdr-ornament { font-family: 'Cormorant Garamond', serif; font-size: 11px; letter-spacing: 10px; color: var(--gold); margin-bottom: 3px; }
-  .hdr-title { font-family: 'Cormorant Garamond', serif; font-size: 13px; font-weight: 400; letter-spacing: 4px; color: var(--mid); }
-  .hdr-back { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); background: none; border: none; color: var(--sub); font-size: 22px; cursor: pointer; padding: 4px; }
+  /* ───── ガーランド ───── */
+  .bunting {
+    flex-shrink: 0; height: 40px;
+    background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADwAAAAUCAYAAADRA14pAAAA9UlEQVR42u3XLxKCQBTH8beM51jCkuAAFhJ3MHEGOYDBYQhkR4rJ5owXsJoMcgBJEiSZvMIz4Qw7LPvHorP769+yn7KPhIwiWDQPLNsMAOC8nSsHSVZD03YEACBkFC/LlXIbV+Wgvd0fym0U+IN2fciV2yLNP611wl7TdiTJam1dAICm7Uhcldq6fRsFvrZu3xZprq1rp3D/YjJlXldHmdfVUeZ1dZR5XXuFZcoiXRVlka6KskhXRXlM125hkbJMd0pZpjulLNOdUhbpWik8upBRfJ4WaPLPDhnF12Zn3CKicXu87tH4NvjmqPjH1s3Nzc3tF/YGnUOxqcXXqKEAAAAASUVORK5CYII=) repeat-x top center;
+    background-size: 120px 40px;
+    image-rendering: pixelated;
+  }
+  /* 足元の花畑 */
+  .garden {
+    width: 100%; height: 60px; margin-top: 8px;
+    background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAAAeCAYAAACc7RhZAAABfklEQVR42mNgGAWjYBSMZMBIbQPfTZjxH8YWKshgHOwBwEILQ5nMbzH8O6lGtv7vl67BA5FTT4txyAUAJZ6HgZ9f5zCwc6fQPDUyUdvzQgUZjAvl3lGc/Cn1PHJqxCs/GPMlp54W44w7G6iS/AmlRpID4MXW0P8wPNgLOGJSI1kpgENIliKH/UcCAx1IZAXAj3ePKbb444liivRTKyWSHAAS3qsZl/80ZJDwXk1R/uS36KU4EClNiQNWCDIyMjJOWN/OwMjISFEgUiMlMqE3QGB4sBdw1EqJTNgaICMJMFGzAbLixLz/QzoAKG2ARFgkMVIaCNQKRGLNoXohGGGRxEipfmoEArHmMNE7dogxg9JAJMUcJlrGDja1gymboAQAsYYSGzsrTsz7j0stKTFMrUDEpZ6JFoaSGlD0CERc6ploYSi1zKBGIBIyh4kWhtKrxqBGRDDRKnbpBSh1JxMtq6Eh2RQeaYAJOa9Tiy0pJcFADTX0YDP2r2v7P5JTAADwEBL7kgYGtAAAAABJRU5ErkJggg==) repeat-x bottom center;
+    background-size: 128px 60px;
+    image-rendering: pixelated;
+  }
 
-  /* WELCOME */
-  #screen-welcome { background: var(--cream); align-items: center; justify-content: center; padding: 0 28px; }
-  .welcome-monogram { width: 96px; height: 96px; border-radius: 50%; border: 1px solid var(--gold-light); display: flex; align-items: center; justify-content: center; margin-bottom: 28px; background: var(--beige); font-family: 'Cormorant Garamond', serif; font-size: 36px; font-style: italic; color: var(--gold); letter-spacing: 2px; }
-  .welcome-names { font-family: 'Cormorant Garamond', serif; font-size: 28px; font-weight: 300; color: var(--dark); text-align: center; letter-spacing: 2px; margin-bottom: 6px; }
-  .welcome-date { font-size: 12px; color: var(--sub); letter-spacing: 3px; text-align: center; margin-bottom: 6px; }
-  .welcome-divider { width: 40px; height: 1px; background: var(--gold-light); margin: 16px auto; }
-  .welcome-msg { font-size: 13px; color: var(--mid); text-align: center; line-height: 2; margin-bottom: 4px; }
-  .table-chip { display: inline-flex; align-items: center; gap: 6px; background: var(--gold-light); color: var(--dark); font-size: 12px; padding: 5px 14px; border-radius: 20px; margin: 14px 0 16px; letter-spacing: 1px; }
-  .welcome-guide { width: 100%; background: var(--beige); border: 1px solid var(--beige2); border-radius: 8px; padding: 12px 16px; font-size: 12px; color: var(--mid); text-align: center; line-height: 2; margin-bottom: 20px; }
-  .guide-num { font-family: 'Cormorant Garamond', serif; font-size: 16px; color: var(--gold); font-weight: 500; margin: 0 2px; }
-  .btn-main { width: 100%; padding: 15px; background: var(--gold); color: var(--white); border: none; border-radius: 4px; cursor: pointer; font-family: 'Zen Kaku Gothic New', sans-serif; font-size: 14px; letter-spacing: 3px; transition: opacity 0.15s; }
-  .btn-main:active { opacity: 0.85; }
-  .btn-sub { width: 100%; padding: 13px; background: transparent; color: var(--mid); border: 1px solid var(--beige2); border-radius: 4px; cursor: pointer; font-family: 'Zen Kaku Gothic New', sans-serif; font-size: 13px; letter-spacing: 2px; margin-top: 10px; transition: background 0.15s; }
-  .btn-sub:active { background: var(--beige); }
+  /* ───── 舞う紙ふぶき ───── */
+  .confetti { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+  .confetti i { position: absolute; top: -14px; display: block; animation: fall linear infinite; }
+  @keyframes fall {
+    0%   { transform: translate(0, -14px); }
+    25%  { transform: translate(9px, 26vh); }
+    50%  { transform: translate(-7px, 52vh); }
+    75%  { transform: translate(8px, 78vh); }
+    100% { transform: translate(0, 106vh); }
+  }
 
-  /* CAMERA */
-  #screen-camera { background: #000; }
-  .viewfinder { flex: 1; position: relative; overflow: hidden; background: #1a1410; display: flex; align-items: center; justify-content: center; }
-  .viewfinder video { width: 100%; height: 100%; object-fit: cover; }
-  .vf-corner { position: absolute; width: 22px; height: 22px; border-color: rgba(255,255,255,0.7); border-style: solid; }
-  .vf-tl { top: 16px; left: 16px; border-width: 1.5px 0 0 1.5px; }
-  .vf-tr { top: 16px; right: 16px; border-width: 1.5px 1.5px 0 0; }
-  .vf-bl { bottom: 16px; left: 16px; border-width: 0 0 1.5px 1.5px; }
-  .vf-br { bottom: 16px; right: 16px; border-width: 0 1.5px 1.5px 0; }
-  .flash { position: absolute; inset: 0; background: #fff; opacity: 0; pointer-events: none; transition: opacity 0.05s; }
-  .no-cam { color: rgba(255,255,255,0.45); font-size: 13px; text-align: center; line-height: 2; padding: 20px; display: none; }
-  .cam-controls { flex-shrink: 0; background: #0f0c09; padding: 20px 24px 32px; display: flex; align-items: center; justify-content: space-between; }
-  .shot-info { text-align: center; }
-  .shot-num { font-size: 30px; font-weight: 300; color: #fff; line-height: 1; font-family: 'Cormorant Garamond', serif; }
-  .shot-lbl { font-size: 10px; color: rgba(255,255,255,0.4); letter-spacing: 2px; margin-top: 2px; }
-  .shutter { width: 68px; height: 68px; border-radius: 50%; border: 2px solid var(--gold); background: transparent; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: transform 0.1s; }
-  .shutter:active { transform: scale(0.92); }
-  .shutter-inner { width: 52px; height: 52px; border-radius: 50%; background: var(--gold); }
-  .shutter:disabled { opacity: 0.3; pointer-events: none; }
-  .thumb-btn { width: 48px; height: 48px; border-radius: 6px; background: #2a2018; border: 1px solid #3a3028; overflow: hidden; cursor: pointer; display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,0.3); font-size: 20px; }
-  .thumb-btn img { width: 100%; height: 100%; object-fit: cover; }
-  .uploading-overlay { position: absolute; inset: 0; background: rgba(20,14,8,0.6); display: none; align-items: center; justify-content: center; z-index: 10; }
-  .uploading-overlay.show { display: flex; }
-  .upload-spinner { width: 40px; height: 40px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.2); border-top-color: var(--gold); animation: spin 0.8s linear infinite; }
-  @keyframes spin { to { transform: rotate(360deg); } }
+  /* ───── 共通パーツ ───── */
+  .box { background: var(--white); border: 3px solid var(--ink); box-shadow: 5px 5px 0 var(--ink); }
 
-  /* GALLERY */
-  #screen-gallery { background: var(--cream); }
-  .gallery-scroll { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; }
-  .gallery-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; padding: 12px 14px; }
-  .stat-card { background: var(--beige); border-radius: 6px; padding: 10px 8px; text-align: center; }
-  .stat-n { font-family: 'Cormorant Garamond', serif; font-size: 24px; font-weight: 300; color: var(--dark); line-height: 1; }
-  .stat-l { font-size: 10px; color: var(--sub); letter-spacing: 0.5px; margin-top: 3px; }
-  .gallery-loading { padding: 40px; text-align: center; color: var(--sub); font-size: 13px; }
-  .gallery-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; padding: 0 2px 20px; }
-  .g-item { aspect-ratio: 1; overflow: hidden; cursor: pointer; background: var(--beige2); position: relative; }
-  .g-item img { width: 100%; height: 100%; object-fit: cover; }
-  .g-meta { position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(0,0,0,0.35)); font-size: 9px; color: rgba(255,255,255,0.85); text-align: right; padding: 10px 4px 3px; }
-  .gallery-empty { padding: 60px 24px; text-align: center; color: var(--sub); font-size: 13px; line-height: 2.2; grid-column: 1 / -1; }
+  .btn {
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    width: 100%; padding: 14px; cursor: pointer;
+    font-family: var(--px); font-size: 15px; letter-spacing: 2px;
+    border: 3px solid var(--ink); box-shadow: 4px 4px 0 var(--ink);
+    background: var(--gold); color: var(--ink);
+  }
+  .btn:active { transform: translate(4px,4px); box-shadow: 0 0 0 var(--ink); }
+  .btn:disabled { opacity: .4; pointer-events: none; }
+  .btn.sub { background: var(--white); color: var(--ink); }
+  .btn.sm { width: auto; padding: 9px 14px; font-size: 13px; box-shadow: 3px 3px 0 var(--ink); letter-spacing: 1px; }
+  .btn.sm:active { transform: translate(3px,3px); }
+  .btn.rose { background: var(--rose); color: var(--ink); }
 
-  /* LIGHTBOX */
-  .lightbox { display: none; position: fixed; inset: 0; z-index: 200; background: rgba(20,14,8,0.94); flex-direction: column; align-items: center; justify-content: center; padding: 20px; }
-  .lightbox.open { display: flex; }
-  .lightbox img { max-width: 100%; max-height: 72vh; border-radius: 4px; }
-  .lb-meta { color: rgba(255,255,255,0.5); font-size: 11px; margin-top: 10px; letter-spacing: 1px; }
-  .lb-close { position: absolute; top: 18px; right: 18px; background: rgba(255,255,255,0.1); border: none; color: #fff; width: 36px; height: 36px; border-radius: 50%; cursor: pointer; font-size: 18px; display: flex; align-items: center; justify-content: center; }
-  .lb-delete { margin-top: 14px; padding: 9px 22px; background: rgba(180,60,60,0.85); color: #fff; border: none; border-radius: 20px; cursor: pointer; font-size: 12px; font-family: 'Zen Kaku Gothic New', sans-serif; letter-spacing: 1px; transition: opacity 0.15s; }
-  .lb-delete:active { opacity: 0.8; }
+  .ico { display: block; fill: currentColor; }
 
-  /* BOTTOM NAV */
-  .bnav { flex-shrink: 0; display: flex; background: var(--cream); border-top: 1px solid var(--beige2); padding: 8px 0 env(safe-area-inset-bottom, 8px); }
-  .bnav-btn { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px; background: none; border: none; cursor: pointer; color: var(--sub); font-size: 10px; letter-spacing: 1px; padding: 6px 0; font-family: 'Zen Kaku Gothic New', sans-serif; }
-  .bnav-btn svg { width: 22px; height: 22px; stroke: currentColor; fill: none; stroke-width: 1.5; }
-  .bnav-btn.active { color: var(--gold); }
+  /* ───── ヘッダー ───── */
+  .hdr {
+    flex-shrink: 0; position: relative;
+    background: var(--white); color: var(--ink);
+    padding: calc(11px + env(safe-area-inset-top, 0px)) 16px 11px;
+    text-align: center; border-bottom: 4px solid var(--rose);
+  }
+  .hdr-t { font-family: var(--dp); font-size: 13px; letter-spacing: 3px; }
+  .hdr-s { font-size: 10px; color: var(--mid); letter-spacing: 2px; margin-top: 3px; }
+  .hdr-back {
+    position: absolute; left: 12px; bottom: 11px;
+    background: none; border: none; color: var(--ink); cursor: pointer; padding: 4px;
+  }
 
-  /* TOAST */
-  .toast { position: fixed; bottom: 90px; left: 50%; transform: translateX(-50%); background: var(--dark); color: #fff; padding: 9px 18px; border-radius: 20px; font-size: 12px; letter-spacing: 0.5px; opacity: 0; pointer-events: none; transition: opacity 0.25s; z-index: 300; white-space: nowrap; }
-  .toast.show { opacity: 1; }
+  /* ───── スクロール域 ───── */
+  .scroll {
+    flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch;
+    padding-left: max(16px, env(safe-area-inset-left, 0px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px));
+  }
+  .scroll.flush { padding-left: 0; padding-right: 0; }
+
+  /* ───── 名前入力 ───── */
+  .name-wrap { padding-block: 32px 40px; display: flex; flex-direction: column; align-items: center; min-height: 100%; justify-content: center; }
+  .name-h { font-family: var(--dp); font-size: 22px; letter-spacing: 2px; margin-bottom: 14px; }
+  .name-lead { font-size: 13px; line-height: 2.1; text-align: center; color: var(--ink2); margin-bottom: 24px; }
+  .name-in {
+    width: 100%; padding: 14px; font-size: 18px; text-align: center;
+    font-family: var(--px); color: var(--ink); background: var(--white);
+    border: 3px solid var(--ink); outline: none; margin-bottom: 10px;
+  }
+  .name-in:focus { box-shadow: 4px 4px 0 var(--gold); }
+  .name-note { font-size: 11px; color: var(--mid); line-height: 1.9; text-align: center; margin-bottom: 22px; }
+
+  /* ───── ウェルカム ───── */
+  .wel { padding-block: 22px 32px; display: flex; flex-direction: column; align-items: center; }
+  .photo-frame { padding: 7px; background: var(--white); border: 3px solid var(--ink); box-shadow: 6px 6px 0 var(--ink); margin-bottom: 18px; }
+  .photo-frame img { display: block; width: 184px; height: 184px; }
+  .names { font-family: var(--dp); font-weight: 700; font-size: 20px; letter-spacing: 1px; text-align: center; line-height: 1.5; display: flex; align-items: center; justify-content: center; gap: 10px; flex-wrap: wrap; }
+  .names .ico { fill: var(--rose); }
+  .date { font-family: var(--dp); font-size: 12px; color: var(--mid); letter-spacing: 2px; margin-top: 10px; text-align: center; }
+  .hero-card {
+    width: 100%; background: var(--white); border: 3px solid var(--ink);
+    box-shadow: 5px 5px 0 var(--ink); padding: 18px 16px 16px;
+  }
+  .rule { width: 100%; height: 3px; background: var(--ink); margin: 14px 0; }
+  .msg { font-size: 12.5px; line-height: 2.1; text-align: center; color: var(--ink2); }
+  .chip {
+    display: inline-flex; align-items: center; gap: 7px; margin: 16px 0 14px;
+    background: var(--gold2); border: 3px solid var(--ink); padding: 7px 14px;
+    font-size: 13px; letter-spacing: 1px;
+  }
+  .guide { width: 100%; background: var(--cream); border: 3px solid var(--ink); padding: 12px 14px; font-size: 11.5px; line-height: 2.1; text-align: center; color: var(--ink2); margin-bottom: 20px; }
+  .guide b { font-family: var(--dp); font-size: 15px; color: var(--gold); }
+  .btn-stack { width: 100%; display: flex; flex-direction: column; gap: 12px; }
+
+  /* ───── カメラ ───── */
+  #screen-camera { background: var(--ink); }
+  .vf { flex: 1; position: relative; overflow: hidden; background: var(--ink2); display: flex; align-items: center; justify-content: center; }
+  .vf video { width: 100%; height: 100%; object-fit: cover; image-rendering: auto; }
+  .corner { position: absolute; width: 18px; height: 18px; border-color: var(--gold); border-style: solid; }
+  .c-tl { top: 14px; left: 14px; border-width: 4px 0 0 4px; }
+  .c-tr { top: 14px; right: 14px; border-width: 4px 4px 0 0; }
+  .c-bl { bottom: 14px; left: 14px; border-width: 0 0 4px 4px; }
+  .c-br { bottom: 14px; right: 14px; border-width: 0 4px 4px 0; }
+  .flash { position: absolute; inset: 0; background: var(--white); opacity: 0; pointer-events: none; }
+  .nocam { color: var(--warm2); font-size: 12px; text-align: center; line-height: 2.1; padding: 20px; display: none; }
+  .busy { position: absolute; inset: 0; background: rgba(30,25,22,.78); display: none; align-items: center; justify-content: center; z-index: 5; }
+  .busy.on { display: flex; }
+  .blocks { display: flex; gap: 5px; }
+  .blocks i { width: 11px; height: 11px; background: var(--gold); display: block; animation: bl .9s steps(2) infinite; }
+  .blocks i:nth-child(2) { animation-delay: .3s; }
+  .blocks i:nth-child(3) { animation-delay: .6s; }
+  @keyframes bl { 0%,49% { opacity:.25 } 50%,100% { opacity:1 } }
+
+  .cam-bar {
+    flex-shrink: 0; background: var(--ink); border-top: 3px solid var(--shade);
+    padding: 16px max(18px, env(safe-area-inset-left,0px)) 20px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .hud { text-align: center; min-width: 62px; }
+  .hud-n { font-family: var(--dp); font-weight: 700; font-size: 30px; color: var(--gold2); line-height: 1; }
+  .hud-l { font-size: 10px; color: var(--warm); letter-spacing: 2px; margin-top: 5px; }
+  .shutter {
+    width: 64px; height: 64px; cursor: pointer; padding: 0;
+    background: var(--gold); border: 4px solid var(--white); box-shadow: 0 0 0 4px var(--ink);
+  }
+  .shutter:active { background: var(--gold2); transform: scale(.94); }
+  .shutter:disabled { opacity: .3; pointer-events: none; }
+  .thumb {
+    width: 52px; height: 52px; cursor: pointer; overflow: hidden; padding: 0;
+    background: var(--ink2); border: 3px solid var(--warm); color: var(--warm);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .thumb img { width: 100%; height: 100%; object-fit: cover; }
+
+  /* ───── タブ ───── */
+  .tabs { display: flex; gap: 6px; padding: 14px 14px 0; }
+  .tab {
+    flex: 1; padding: 10px 0; cursor: pointer; font-family: var(--px); font-size: 12.5px;
+    background: var(--white); color: var(--mid); border: 3px solid var(--ink);
+  }
+  .tab.on { background: var(--rose); color: var(--ink); }
+
+  /* ───── 統計 ───── */
+  .stats { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 7px; padding: 12px 14px; }
+  .stat { background: var(--white); border: 3px solid var(--ink); padding: 9px 4px; text-align: center; }
+  .stat-n { font-family: var(--dp); font-weight: 700; font-size: 20px; line-height: 1; }
+  .stat-l { font-size: 9.5px; color: var(--mid); margin-top: 5px; letter-spacing: .5px; }
+
+  .dl-zone { padding: 0 14px 12px; display: none; }
+  .dl-zone.on { display: block; }
+  .dl-msg { font-size: 11px; color: var(--mid); text-align: center; margin-top: 8px; display: none; }
+  .dl-msg.on { display: block; }
+
+  /* ───── グリッド ───── */
+  .grid { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 4px; padding: 0 14px 24px; }
+  .cell { aspect-ratio: 1; position: relative; cursor: pointer; background: var(--pale2); border: 3px solid var(--ink); overflow: hidden; }
+  .cell img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .cell.mine { border-color: var(--gold); }
+  .cell-who { position: absolute; left: 0; right: 0; bottom: 0; background: var(--ink); color: var(--white); font-size: 9px; padding: 3px 2px; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .cell-like { position: absolute; top: 3px; left: 3px; display: flex; align-items: center; gap: 3px; background: var(--ink); color: var(--white); font-size: 9.5px; padding: 2px 5px; }
+  .cell-like.on { background: var(--rose); color: var(--ink); }
+  .empty { grid-column: 1/-1; padding: 48px 20px; text-align: center; font-size: 12px; line-height: 2.2; color: var(--mid); }
+  .loading { grid-column: 1/-1; padding: 48px; text-align: center; font-size: 12px; color: var(--mid); }
+
+  /* ───── ライトボックス ───── */
+  .lb { display: none; position: fixed; inset: 0; z-index: 200; background: rgba(30,25,22,.96); flex-direction: column; align-items: center; justify-content: center; padding: 20px; }
+  .lb.on { display: flex; }
+  .lb-img { max-width: 100%; max-height: 58vh; border: 3px solid var(--white); image-rendering: auto; }
+  .lb-meta { color: var(--warm2); font-size: 11px; margin-top: 12px; text-align: center; line-height: 1.9; }
+  .lb-x { position: absolute; top: calc(14px + env(safe-area-inset-top,0px)); right: 14px; background: var(--ink2); border: 3px solid var(--warm); color: var(--white); width: 38px; height: 38px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+  .lb-like {
+    display: flex; align-items: center; gap: 9px; margin-top: 16px; cursor: pointer;
+    background: var(--ink2); border: 3px solid var(--warm); color: var(--white);
+    padding: 11px 24px; font-family: var(--px); font-size: 15px;
+  }
+  .lb-like .ico { fill: var(--warm2); }
+  .lb-like.on { background: var(--rose); border-color: var(--white); color: var(--ink); }
+  .lb-like.on .ico { fill: var(--ink); }
+  .lb-like.ro { opacity: .55; cursor: default; }
+  .lb-like.pop .ico { animation: pop .35s steps(3); }
+  @keyframes pop { 0%{transform:scale(1)} 50%{transform:scale(1.5)} 100%{transform:scale(1)} }
+  .lb-btns { display: flex; gap: 10px; margin-top: 14px; }
+
+  /* ───── モーダル ───── */
+  .modal { display: none; position: fixed; inset: 0; z-index: 250; background: rgba(30,25,22,.7); align-items: center; justify-content: center; padding: 24px; }
+  .modal.on { display: flex; }
+  .modal-in { background: var(--white); border: 3px solid var(--ink); box-shadow: 7px 7px 0 var(--ink); padding: 22px 18px 18px; max-width: 320px; width: 100%; text-align: center; }
+  .modal-l { font-size: 10.5px; color: var(--mid); letter-spacing: 2px; margin-bottom: 10px; }
+  .modal-n { font-family: var(--dp); font-weight: 700; font-size: 20px; margin-bottom: 14px; word-break: break-all; line-height: 1.5; }
+  .modal-t { font-size: 12px; line-height: 2; color: var(--ink2); margin-bottom: 18px; }
+  .modal-t b { color: #C4555E; }
+  .modal-b { display: flex; gap: 9px; }
+
+  /* ───── 下ナビ ───── */
+  .nav { flex-shrink: 0; display: flex; background: var(--white); border-top: 4px solid var(--ink); padding-bottom: env(safe-area-inset-bottom, 0px); }
+  .nav button { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 5px; background: none; border: none; cursor: pointer; color: var(--mid); font-family: var(--px); font-size: 10px; letter-spacing: 1px; padding: 10px 0; }
+  .nav button.on { color: var(--rose); }
+
+  /* ───── トースト ───── */
+  .toast {
+    position: fixed; left: 50%; transform: translateX(-50%);
+    bottom: calc(86px + env(safe-area-inset-bottom,0px));
+    background: var(--ink); color: var(--white); border: 3px solid var(--gold);
+    padding: 9px 16px; font-size: 12px; z-index: 300;
+    opacity: 0; pointer-events: none; max-width: 88vw; text-align: center;
+  }
+  .toast.on { opacity: 1; }
 
   canvas#snap { display: none; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .blocks i, .lb-like.pop .ico, .confetti i { animation: none; }
+    .confetti { display: none; }
+  }
 </style>
 </head>
 <body>
 
-<!-- WELCOME -->
-<div id="screen-welcome" class="screen active">
+<div class="confetti" id="confetti" aria-hidden="true"></div>
+
+<!-- ═══ 名前入力 ═══ -->
+<div id="screen-name" class="screen">
   <div class="hdr">
-    <div class="hdr-ornament">✦ &nbsp; ✦ &nbsp; ✦</div>
-    <div class="hdr-title">WEDDING PHOTO</div>
+    <div class="hdr-t">WEDDING PHOTO</div>
+    <div class="hdr-s">SAAYA &amp; TOSHIKI</div>
   </div>
-  <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 28px 40px;">
-    <div class="welcome-monogram">S&amp;T</div>
-    <div class="welcome-names">Saaya &amp; Toshiki</div>
-    <div class="welcome-date" id="today-date"></div>
-    <div class="welcome-divider"></div>
-    <div class="welcome-msg">ご来場ありがとうございます<br>大切な瞬間を一緒に残しましょう</div>
-    <div class="table-chip" id="table-chip">テーブル 1 · 席 A</div>
-    <div class="welcome-guide">
-      各席にあるQRコードを読み取ると<br>
-      おひとり<span class="guide-num">25枚</span>まで写真が撮れます。<br>
-      撮影した写真はみんなで共有されます。
+  <div class="scroll">
+    <div class="name-wrap">
+      <div class="name-h">WELCOME</div>
+      <div class="name-lead">
+        はじめにお名前を教えてください。<br>
+        撮った写真がどなたのものか<br>分かるようになります。
+      </div>
+      <input class="name-in" id="name-in" type="text" maxlength="12"
+             placeholder="れい：たなか ゆうこ" autocomplete="name" enterkeyhint="done">
+      <div class="name-note">ニックネームでも大丈夫です（12文字まで）<br>あとから変更できないのでご注意ください</div>
+      <button class="btn" id="name-go" onclick="askName()" disabled>はじめる</button>
     </div>
-    <button class="btn-main" onclick="startCamera()">撮　影　を　は　じ　め　る</button>
-    <button class="btn-sub" onclick="showGallery()">みんなの写真を見る</button>
   </div>
 </div>
 
-<!-- CAMERA -->
+<!-- ═══ ウェルカム ═══ -->
+<div id="screen-welcome" class="screen">
+  <div class="hdr">
+    <div class="hdr-t">WEDDING PHOTO</div>
+    <div class="hdr-s">SAAYA &amp; TOSHIKI</div>
+  </div>
+  <div class="bunting" aria-hidden="true"></div>
+  <div class="scroll">
+    <div class="wel">
+      <div class="photo-frame">
+        <img src="data:image/png;base64,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" alt="新郎新婦がベンチで新聞を読んでいるドット絵の写真" width="184" height="184">
+      </div>
+      <div class="hero-card">
+        <div class="names"><span>Saaya</span><svg class="ico" width="20" height="17.5" viewBox="0 0 8 7" aria-hidden="true"><path d="M1 0h2v1h-2zM5 0h2v1h-2zM0 1h8v1h-8zM0 2h8v1h-8zM0 3h8v1h-8zM1 4h6v1h-6zM2 5h4v1h-4zM3 6h2v1h-2z"/></svg><span>Toshiki</span></div>
+        <div class="date" id="today"></div>
+        <div class="rule"></div>
+        <div class="msg">ご来場ありがとうございます<br>大切な瞬間を一緒に残しましょう</div>
+      </div>
+      <div class="chip" id="chip"><svg class="ico" width="13" height="11.4" viewBox="0 0 8 7" aria-hidden="true"><path d="M3 0h2v1h-2zM3 1h2v1h-2zM0 2h8v1h-8zM1 3h6v1h-6zM2 4h4v1h-4zM1 5h2v1h-2zM5 5h2v1h-2zM1 6h1v1h-1zM6 6h1v1h-1z"/></svg><span id="chip-name">—</span></div>
+      <div class="guide">
+        おひとり <b>25まい</b> まで写真が撮れます<br>
+        撮った写真はみんなで共有されます<br>
+        いいなと思った写真にはハートを送れます
+      </div>
+      <div class="btn-stack">
+        <button class="btn" onclick="startCamera()"><svg class="ico" width="17" height="13.6" viewBox="0 0 10 8" aria-hidden="true"><path d="M3 0h3v1h-3zM0 1h10v1h-10zM0 2h4v1h-4zM6 2h4v1h-4zM0 3h3v1h-3zM7 3h3v1h-3zM0 4h3v1h-3zM7 4h3v1h-3zM0 5h4v1h-4zM6 5h4v1h-4zM0 6h10v1h-10zM0 7h10v1h-10z"/></svg>撮影をはじめる</button>
+        <button class="btn sub" onclick="showGallery()"><svg class="ico" width="16" height="14.2" viewBox="0 0 9 8" aria-hidden="true"><path d="M0 0h9v1h-9zM0 1h1v1h-1zM8 1h1v1h-1zM0 2h1v1h-1zM3 2h1v1h-1zM8 2h1v1h-1zM0 3h1v1h-1zM8 3h1v1h-1zM0 4h1v1h-1zM5 4h1v1h-1zM8 4h1v1h-1zM0 5h1v1h-1zM4 5h3v1h-3zM8 5h1v1h-1zM0 6h1v1h-1zM2 6h7v1h-7zM0 7h9v1h-9z"/></svg>みんなの写真を見る</button>
+      </div>
+      <div class="garden" aria-hidden="true"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ カメラ ═══ -->
 <div id="screen-camera" class="screen">
-  <div class="viewfinder" id="vf">
+  <div class="vf">
     <video id="vid" autoplay playsinline muted></video>
-    <div class="no-cam" id="no-cam">カメラへのアクセスを<br>許可してください</div>
-    <div class="vf-corner vf-tl"></div>
-    <div class="vf-corner vf-tr"></div>
-    <div class="vf-corner vf-bl"></div>
-    <div class="vf-corner vf-br"></div>
+    <div class="nocam" id="nocam">カメラへのアクセスを<br>許可してください</div>
+    <div class="corner c-tl"></div><div class="corner c-tr"></div>
+    <div class="corner c-bl"></div><div class="corner c-br"></div>
     <div class="flash" id="flash"></div>
-    <div class="uploading-overlay" id="uploading">
-      <div class="upload-spinner"></div>
-    </div>
+    <div class="busy" id="busy"><div class="blocks"><i></i><i></i><i></i></div></div>
   </div>
-  <div class="cam-controls">
-    <div class="shot-info">
-      <div class="shot-num" id="shots-left">25</div>
-      <div class="shot-lbl">残り枚数</div>
+  <div class="cam-bar">
+    <div class="hud">
+      <div class="hud-n" id="left">25</div>
+      <div class="hud-l">のこり</div>
     </div>
-    <button class="shutter" id="shutter-btn" onclick="takePhoto()" aria-label="撮影">
-      <div class="shutter-inner"></div>
-    </button>
-    <button class="thumb-btn" id="thumb-btn" onclick="showGallery()" aria-label="ギャラリー">📷</button>
+    <button class="shutter" id="shutter" onclick="takePhoto()" aria-label="撮影する"></button>
+    <button class="thumb" id="thumb" onclick="showGallery()" aria-label="ギャラリーを開く"><svg class="ico" width="16" height="14.2" viewBox="0 0 9 8" aria-hidden="true"><path d="M0 0h9v1h-9zM0 1h1v1h-1zM8 1h1v1h-1zM0 2h1v1h-1zM3 2h1v1h-1zM8 2h1v1h-1zM0 3h1v1h-1zM8 3h1v1h-1zM0 4h1v1h-1zM5 4h1v1h-1zM8 4h1v1h-1zM0 5h1v1h-1zM4 5h3v1h-3zM8 5h1v1h-1zM0 6h1v1h-1zM2 6h7v1h-7zM0 7h9v1h-9z"/></svg></button>
   </div>
-  <nav class="bnav">
-    <button class="bnav-btn" onclick="showScreen('welcome')">
-      <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>ホーム
-    </button>
-    <button class="bnav-btn active">
-      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M20.94 13A9 9 0 1011 3.06"/></svg>カメラ
-    </button>
-    <button class="bnav-btn" onclick="showGallery()">
-      <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>ギャラリー
-    </button>
+  <nav class="nav">
+    <button onclick="showScreen('welcome')"><svg class="ico" width="16" height="14.2" viewBox="0 0 9 8" aria-hidden="true"><path d="M4 0h1v1h-1zM3 1h3v1h-3zM2 2h5v1h-5zM1 3h7v1h-7zM0 4h9v1h-9zM1 5h7v1h-7zM1 6h3v1h-3zM5 6h3v1h-3zM1 7h3v1h-3zM5 7h3v1h-3z"/></svg>ホーム</button>
+    <button class="on"><svg class="ico" width="17" height="13.6" viewBox="0 0 10 8" aria-hidden="true"><path d="M3 0h3v1h-3zM0 1h10v1h-10zM0 2h4v1h-4zM6 2h4v1h-4zM0 3h3v1h-3zM7 3h3v1h-3zM0 4h3v1h-3zM7 4h3v1h-3zM0 5h4v1h-4zM6 5h4v1h-4zM0 6h10v1h-10zM0 7h10v1h-10z"/></svg>カメラ</button>
+    <button onclick="showGallery()"><svg class="ico" width="16" height="14.2" viewBox="0 0 9 8" aria-hidden="true"><path d="M0 0h9v1h-9zM0 1h1v1h-1zM8 1h1v1h-1zM0 2h1v1h-1zM3 2h1v1h-1zM8 2h1v1h-1zM0 3h1v1h-1zM8 3h1v1h-1zM0 4h1v1h-1zM5 4h1v1h-1zM8 4h1v1h-1zM0 5h1v1h-1zM4 5h3v1h-3zM8 5h1v1h-1zM0 6h1v1h-1zM2 6h7v1h-7zM0 7h9v1h-9z"/></svg>ギャラリー</button>
   </nav>
 </div>
 
-<!-- GALLERY -->
+<!-- ═══ ギャラリー ═══ -->
 <div id="screen-gallery" class="screen">
   <div class="hdr">
-    <button class="hdr-back" onclick="showScreen('welcome')" aria-label="戻る">←</button>
-    <div class="hdr-ornament">✦ &nbsp; ✦ &nbsp; ✦</div>
-    <div class="hdr-title">GALLERY</div>
+    <button class="hdr-back" onclick="showScreen('welcome')" aria-label="ホームに戻る"><svg class="ico" width="14" height="14.0" viewBox="0 0 8 8" aria-hidden="true"><path d="M3 0h2v1h-2zM2 1h2v1h-2zM1 2h2v1h-2zM0 3h8v1h-8zM0 4h8v1h-8zM1 5h2v1h-2zM2 6h2v1h-2zM3 7h2v1h-2z"/></svg></button>
+    <div class="hdr-t">GALLERY</div>
+    <div class="hdr-s">みんなのしゃしん</div>
   </div>
-  <div class="gallery-scroll">
-    <div class="gallery-stats" id="gallery-stats"></div>
-    <div class="gallery-grid" id="gallery-grid">
-      <div class="gallery-loading">読み込み中...</div>
+  <div class="scroll flush">
+    <div class="tabs">
+      <button class="tab on" id="tab-all" onclick="switchTab('all')">みんな</button>
+      <button class="tab" id="tab-popular" onclick="switchTab('popular')">にんき</button>
+      <button class="tab" id="tab-mine" onclick="switchTab('mine')">じぶん</button>
     </div>
+    <div class="stats" id="stats"></div>
+    <div class="dl-zone" id="dl-zone">
+      <button class="btn sub" id="dl-btn" onclick="downloadMine()"><svg class="ico" width="15" height="15.0" viewBox="0 0 8 8" aria-hidden="true"><path d="M3 0h2v1h-2zM3 1h2v1h-2zM3 2h2v1h-2zM0 3h8v1h-8zM1 4h6v1h-6zM2 5h4v1h-4zM3 6h2v1h-2zM0 7h8v1h-8z"/></svg>じぶんの写真をまとめて保存</button>
+      <div class="dl-msg" id="dl-msg"></div>
+    </div>
+    <div class="grid" id="grid"><div class="loading">よみこみ中…</div></div>
   </div>
-  <nav class="bnav">
-    <button class="bnav-btn" onclick="showScreen('welcome')">
-      <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>ホーム
-    </button>
-    <button class="bnav-btn" onclick="startCamera()">
-      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M20.94 13A9 9 0 1011 3.06"/></svg>カメラ
-    </button>
-    <button class="bnav-btn active">
-      <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>ギャラリー
-    </button>
+  <nav class="nav">
+    <button onclick="showScreen('welcome')"><svg class="ico" width="16" height="14.2" viewBox="0 0 9 8" aria-hidden="true"><path d="M4 0h1v1h-1zM3 1h3v1h-3zM2 2h5v1h-5zM1 3h7v1h-7zM0 4h9v1h-9zM1 5h7v1h-7zM1 6h3v1h-3zM5 6h3v1h-3zM1 7h3v1h-3zM5 7h3v1h-3z"/></svg>ホーム</button>
+    <button onclick="startCamera()"><svg class="ico" width="17" height="13.6" viewBox="0 0 10 8" aria-hidden="true"><path d="M3 0h3v1h-3zM0 1h10v1h-10zM0 2h4v1h-4zM6 2h4v1h-4zM0 3h3v1h-3zM7 3h3v1h-3zM0 4h3v1h-3zM7 4h3v1h-3zM0 5h4v1h-4zM6 5h4v1h-4zM0 6h10v1h-10zM0 7h10v1h-10z"/></svg>カメラ</button>
+    <button class="on"><svg class="ico" width="16" height="14.2" viewBox="0 0 9 8" aria-hidden="true"><path d="M0 0h9v1h-9zM0 1h1v1h-1zM8 1h1v1h-1zM0 2h1v1h-1zM3 2h1v1h-1zM8 2h1v1h-1zM0 3h1v1h-1zM8 3h1v1h-1zM0 4h1v1h-1zM5 4h1v1h-1zM8 4h1v1h-1zM0 5h1v1h-1zM4 5h3v1h-3zM8 5h1v1h-1zM0 6h1v1h-1zM2 6h7v1h-7zM0 7h9v1h-9z"/></svg>ギャラリー</button>
   </nav>
 </div>
 
-<!-- LIGHTBOX -->
-<div class="lightbox" id="lightbox">
-  <button class="lb-close" onclick="closeLb()" aria-label="閉じる">✕</button>
-  <img id="lb-img" src="" alt="写真拡大" onclick="closeLb()">
+<!-- ═══ ライトボックス ═══ -->
+<div class="lb" id="lb">
+  <button class="lb-x" onclick="closeLb()" aria-label="閉じる"><svg class="ico" width="13" height="13.0" viewBox="0 0 8 8" aria-hidden="true"><path d="M0 0h2v1h-2zM6 0h2v1h-2zM0 1h3v1h-3zM5 1h3v1h-3zM1 2h6v1h-6zM2 3h4v1h-4zM2 4h4v1h-4zM1 5h6v1h-6zM0 6h3v1h-3zM5 6h3v1h-3zM0 7h2v1h-2zM6 7h2v1h-2z"/></svg></button>
+  <img class="lb-img" id="lb-img" src="" alt="写真の拡大表示" onclick="closeLb()">
   <div class="lb-meta" id="lb-meta"></div>
-  <button class="lb-delete" id="lb-delete" onclick="deletePhoto()" style="display:none">
-    🗑 この写真を削除する
+  <button class="lb-like" id="lb-like" onclick="toggleLike()">
+    <svg class="ico" width="15" height="13.1" viewBox="0 0 8 7" aria-hidden="true"><path d="M1 0h2v1h-2zM5 0h2v1h-2zM0 1h8v1h-8zM0 2h8v1h-8zM0 3h8v1h-8zM1 4h6v1h-6zM2 5h4v1h-4zM3 6h2v1h-2z"/></svg><span id="lb-n">0</span>
   </button>
+  <div class="lb-btns" id="lb-btns" style="display:none">
+    <button class="btn sm sub" onclick="downloadOne()"><svg class="ico" width="15" height="15.0" viewBox="0 0 8 8" aria-hidden="true"><path d="M3 0h2v1h-2zM3 1h2v1h-2zM3 2h2v1h-2zM0 3h8v1h-8zM1 4h6v1h-6zM2 5h4v1h-4zM3 6h2v1h-2zM0 7h8v1h-8z"/></svg>ほぞん</button>
+    <button class="btn sm rose" onclick="askDelete()"><svg class="ico" width="15" height="15.0" viewBox="0 0 8 8" aria-hidden="true"><path d="M3 0h2v1h-2zM1 1h6v1h-6zM0 2h8v1h-8zM1 3h6v1h-6zM1 4h1v1h-1zM3 4h2v1h-2zM6 4h1v1h-1zM1 5h1v1h-1zM3 5h2v1h-2zM6 5h1v1h-1zM1 6h1v1h-1zM3 6h2v1h-2zM6 6h1v1h-1zM1 7h6v1h-6z"/></svg>さくじょ</button>
+  </div>
+</div>
+
+<!-- ═══ 名前の確認 ═══ -->
+<div class="modal" id="m-name">
+  <div class="modal-in">
+    <div class="modal-l">このおなまえで登録します</div>
+    <div class="modal-n" id="m-name-v">—</div>
+    <div class="modal-t">おなまえは<b>あとから変更できません</b>。<br>撮った写真にこのおなまえが表示されます。</div>
+    <div class="modal-b">
+      <button class="btn sub" onclick="closeNameModal()">書き直す</button>
+      <button class="btn" onclick="confirmName()">これでOK</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ 削除の確認 ═══ -->
+<div class="modal" id="m-del">
+  <div class="modal-in">
+    <div class="modal-l">しゃしんを削除します</div>
+    <div class="modal-t">この写真を削除します。<br><b>元には戻せません。</b><br>撮影できる枚数は戻りません。</div>
+    <div class="modal-b">
+      <button class="btn sub" onclick="closeDelModal()">やめる</button>
+      <button class="btn rose" onclick="deletePhoto()">削除する</button>
+    </div>
+  </div>
 </div>
 
 <div class="toast" id="toast"></div>
 <canvas id="snap"></canvas>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <script>
-  const CLOUDINARY_CLOUD = 'dd528t1sx';
-  const CLOUDINARY_PRESET = 'wedding_upload';
+  // ═══════════ 設定 ═══════════
+  const CLOUD   = 'dd528t1sx';
+  const PRESET  = 'wedding_upload';
   const MAX_SHOTS = 25;
 
-  const params = new URLSearchParams(location.search);
-  const TABLE = params.get('table') || '1';
-  const SEAT  = params.get('seat')  || 'A';
-  const SEAT_ID = `table${TABLE}-seat${SEAT}`;
-
-  let stream = null;
-  let demoMode = false;
-  let allPhotos = [];
-
-  // 残り枚数をlocalStorageで管理
-  function getShotsLeft() {
-    const v = localStorage.getItem('shots-' + SEAT_ID);
-    return v !== null ? parseInt(v) : MAX_SHOTS;
-  }
-  function saveShotsLeft(n) {
-    localStorage.setItem('shots-' + SEAT_ID, String(n));
-  }
-
-  // 初期化
-  document.getElementById('table-chip').textContent = `テーブル ${TABLE} · 席 ${SEAT}`;
-
-  // 今日の日付を取得して表示
-  (async () => {
-    try {
-      const res = await fetch('https://worldtimeapi.org/api/timezone/Asia/Tokyo');
-      const data = await res.json();
-      const d = new Date(data.datetime);
-      const y = d.getFullYear();
-      const m = String(d.getMonth() + 1).padStart(2, '0');
-      const day = String(d.getDate()).padStart(2, '0');
-      document.getElementById('today-date').textContent = `${y} · ${m} · ${day}`;
-    } catch(e) {
-      const d = new Date();
-      const y = d.getFullYear();
-      const m = String(d.getMonth() + 1).padStart(2, '0');
-      const day = String(d.getDate()).padStart(2, '0');
-      document.getElementById('today-date').textContent = `${y} · ${m} · ${day}`;
+  // ═══════════ ゲストID・名前 ═══════════
+  function getGuestId() {
+    let id = localStorage.getItem('guestId');
+    if (!id) {
+      id = 'g' + Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+      localStorage.setItem('guestId', id);
     }
-  })();
-  updateCounter();
+    return id;
+  }
+  const GUEST_ID = getGuestId();
+  const getName = () => localStorage.getItem('guestName') || '';
+  const setName = n => localStorage.setItem('guestName', n);
+  const clean   = n => n.replace(/[|=\r\n]/g, '').trim().slice(0, 12);
 
-  function updateCounter() {
-    const n = getShotsLeft();
-    document.getElementById('shots-left').textContent = n;
-    const btn = document.getElementById('shutter-btn');
-    btn.disabled = n <= 0;
+  const getLeft  = () => { const v = localStorage.getItem('shots-' + GUEST_ID); return v !== null ? parseInt(v) : MAX_SHOTS; };
+  const saveLeft = n => localStorage.setItem('shots-' + GUEST_ID, String(n));
+
+  // ═══════════ 状態 ═══════════
+  let stream = null, demo = false, photos = [], tab = 'all', lbId = null, likeBusy = false;
+
+  // Cloudinaryの変換でサムネイルを小さく配信する。
+  // 通信量が減り、拡大時にドット絵として表示される
+  function thumbUrl(url, w) {
+    return url.replace('/image/upload/', `/image/upload/w_${w},h_${w},c_fill,q_auto/`);
+  }
+  function viewUrl(url) {
+    return url.replace('/image/upload/', '/image/upload/w_1200,q_auto,f_auto/');
   }
 
+  // ═══════════ 起動 ═══════════
+  function boot() {
+    showDate();
+    updateHud();
+    if (getName()) { refreshChip(); showScreen('welcome'); }
+    else { showScreen('name'); setTimeout(() => nameIn.focus(), 300); }
+  }
+
+  async function showDate() {
+    const f = d => `${d.getFullYear()} . ${String(d.getMonth()+1).padStart(2,'0')} . ${String(d.getDate()).padStart(2,'0')}`;
+    try {
+      const r = await fetch('https://worldtimeapi.org/api/timezone/Asia/Tokyo');
+      document.getElementById('today').textContent = f(new Date((await r.json()).datetime));
+    } catch(e) {
+      document.getElementById('today').textContent = f(new Date());
+    }
+  }
+
+  // ═══════════ 名前 ═══════════
+  const nameIn = document.getElementById('name-in');
+  nameIn.addEventListener('input', () => {
+    document.getElementById('name-go').disabled = nameIn.value.trim().length === 0;
+  });
+  nameIn.addEventListener('keydown', e => { if (e.key === 'Enter' && nameIn.value.trim()) askName(); });
+
+  function askName() {
+    const n = clean(nameIn.value);
+    if (!n) { toast('おなまえを入力してください'); return; }
+    nameIn.blur();
+    document.getElementById('m-name-v').textContent = n;
+    document.getElementById('m-name').classList.add('on');
+  }
+  function closeNameModal() {
+    document.getElementById('m-name').classList.remove('on');
+    setTimeout(() => nameIn.focus(), 100);
+  }
+  function confirmName() {
+    const n = clean(nameIn.value);
+    if (!n) { closeNameModal(); return; }
+    setName(n); refreshChip();
+    document.getElementById('m-name').classList.remove('on');
+    showScreen('welcome');
+  }
+  function refreshChip() { document.getElementById('chip-name').textContent = getName() + ' さん'; }
+
+  // ═══════════ 画面 ═══════════
   function showScreen(id) {
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
     document.getElementById('screen-' + id).classList.add('active');
-    if (id !== 'camera' && stream) {
-      stream.getTracks().forEach(t => t.stop());
-      stream = null;
-    }
+    if (id !== 'camera' && stream) { stream.getTracks().forEach(t => t.stop()); stream = null; }
   }
 
+  // ═══════════ カメラ ═══════════
   async function startCamera() {
-    showScreen('camera');
-    updateCounter();
+    if (!getName()) { showScreen('name'); return; }
+    showScreen('camera'); updateHud();
     const vid = document.getElementById('vid');
     try {
       stream = await navigator.mediaDevices.getUserMedia({
-        video: { facingMode: 'environment', width: { ideal: 1280 }, height: { ideal: 960 } },
-        audio: false
+        video: { facingMode: 'environment', width: { ideal: 1280 }, height: { ideal: 960 } }, audio: false
       });
-      vid.srcObject = stream;
-      vid.style.display = 'block';
-      document.getElementById('no-cam').style.display = 'none';
-      demoMode = false;
+      vid.srcObject = stream; vid.style.display = 'block';
+      document.getElementById('nocam').style.display = 'none';
+      demo = false;
     } catch(e) {
       vid.style.display = 'none';
-      document.getElementById('no-cam').style.display = 'block';
-      demoMode = true;
+      document.getElementById('nocam').style.display = 'block';
+      demo = true;
     }
+  }
+
+  function updateHud() {
+    const n = getLeft();
+    document.getElementById('left').textContent = n;
+    document.getElementById('shutter').disabled = n <= 0;
   }
 
   async function takePhoto() {
-    const shotsLeft = getShotsLeft();
-    if (shotsLeft <= 0) { toast('撮影枚数の上限（25枚）に達しました'); return; }
+    const left = getLeft();
+    if (left <= 0) { toast('撮影できる枚数の上限です'); return; }
 
-    const flash = document.getElementById('flash');
-    flash.style.opacity = '1';
-    setTimeout(() => { flash.style.opacity = '0'; }, 80);
+    const fl = document.getElementById('flash');
+    fl.style.opacity = '1';
+    setTimeout(() => { fl.style.opacity = '0'; }, 70);
 
     let blob;
-    if (!demoMode) {
-      const vid = document.getElementById('vid');
-      const cv = document.getElementById('snap');
-      cv.width = vid.videoWidth || 1280;
-      cv.height = vid.videoHeight || 960;
+    if (!demo) {
+      const vid = document.getElementById('vid'), cv = document.getElementById('snap');
+      cv.width = vid.videoWidth || 1280; cv.height = vid.videoHeight || 960;
       cv.getContext('2d').drawImage(vid, 0, 0);
       blob = await new Promise(r => cv.toBlob(r, 'image/jpeg', 0.85));
-    } else {
-      blob = makeDemoBlob();
-    }
+    } else { blob = demoBlob(); }
 
-    document.getElementById('uploading').classList.add('show');
-    document.getElementById('shutter-btn').disabled = true;
+    document.getElementById('busy').classList.add('on');
+    document.getElementById('shutter').disabled = true;
 
     try {
-      const { url, public_id } = await uploadToCloudinary(blob);
-      const newShots = shotsLeft - 1;
-      saveShotsLeft(newShots);
-      updateCounter();
-
-      const objUrl = URL.createObjectURL(blob);
-      const tb = document.getElementById('thumb-btn');
-      tb.innerHTML = `<img src="${objUrl}" alt="最新写真">`;
-
-      allPhotos.unshift({
-        url, public_id,
-        table: TABLE, seat: SEAT,
-        time: new Date().toLocaleTimeString('ja-JP', { hour: '2-digit', minute: '2-digit' }),
-        mine: true
+      const { url, public_id } = await upload(blob);
+      const now = left - 1;
+      saveLeft(now); updateHud();
+      document.getElementById('thumb').innerHTML =
+        `<img src="${URL.createObjectURL(blob)}" alt="さいごに撮った写真">`;
+      photos.unshift({
+        url, public_id, guest: GUEST_ID, name: getName(), mine: true,
+        likes: 0, likers: [], likedByMe: false,
+        time: new Date().toLocaleTimeString('ja-JP', { hour: '2-digit', minute: '2-digit' })
       });
-
-      toast(`撮影しました ✦ 残り ${newShots} 枚`);
+      toast(`撮影しました！ のこり ${now} まい`);
     } catch(e) {
-      toast('アップロードに失敗しました。再試行してください。');
+      toast('送信に失敗しました。もう一度お試しください');
     } finally {
-      document.getElementById('uploading').classList.remove('show');
-      if (getShotsLeft() > 0) document.getElementById('shutter-btn').disabled = false;
+      document.getElementById('busy').classList.remove('on');
+      if (getLeft() > 0) document.getElementById('shutter').disabled = false;
     }
   }
 
-  async function uploadToCloudinary(blob) {
+  async function upload(blob) {
     const fd = new FormData();
     fd.append('file', blob, 'photo.jpg');
-    fd.append('upload_preset', CLOUDINARY_PRESET);
-    fd.append('folder', `wedding/table${TABLE}`);
-    fd.append('tags', `table${TABLE},seat${SEAT}`);
-    const res = await fetch(
-      `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD}/image/upload`,
-      { method: 'POST', body: fd }
-    );
+    fd.append('upload_preset', PRESET);
+    fd.append('folder', 'wedding/guests');
+    fd.append('tags', 'guest_' + GUEST_ID);
+    fd.append('context', 'name=' + clean(getName()));
+    const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUD}/image/upload`, { method: 'POST', body: fd });
     if (!res.ok) throw new Error('upload failed');
-    const data = await res.json();
-    return { url: data.secure_url, public_id: data.public_id };
+    const d = await res.json();
+    return { url: d.secure_url, public_id: d.public_id };
   }
 
-  async function showGallery() {
-    showScreen('gallery');
-    renderStats();
-    await fetchPhotos();
-  }
+  // ═══════════ ギャラリー ═══════════
+  async function showGallery() { showScreen('gallery'); render(); await load(); }
 
-  async function fetchPhotos() {
-    const grid = document.getElementById('gallery-grid');
-    grid.innerHTML = '<div class="gallery-loading">読み込み中...</div>';
+  async function load() {
+    document.getElementById('grid').innerHTML = '<div class="loading">よみこみ中…</div>';
     try {
-      const res = await fetch('/api/photos');
-      const data = await res.json();
-      allPhotos = (data.photos || []).map(p => ({
-        ...p,
-        mine: p.table === TABLE && p.seat === SEAT
+      const d = await (await fetch('/api/photos')).json();
+      photos = (d.photos || []).map(p => ({
+        ...p, mine: p.guest === GUEST_ID,
+        likes: p.likes || 0, likedByMe: (p.likers || []).includes(GUEST_ID)
       }));
-      renderGallery();
-    } catch(e) {
-      renderGallery();
-    }
+    } catch(e) { /* 取得できなければ手元のぶんを出す */ }
+    render();
   }
 
-  function renderStats() {
-    const myCount = allPhotos.filter(p => p.table === TABLE && p.seat === SEAT).length;
-    document.getElementById('gallery-stats').innerHTML = `
-      <div class="stat-card"><div class="stat-n">${allPhotos.length}</div><div class="stat-l">みんなの写真</div></div>
-      <div class="stat-card"><div class="stat-n">${myCount}</div><div class="stat-l">あなたの席から</div></div>
-      <div class="stat-card"><div class="stat-n">${getShotsLeft()}</div><div class="stat-l">残り枚数</div></div>
-    `;
+  const mine = () => photos.filter(p => p.mine);
+  function visible() {
+    if (tab === 'mine') return mine();
+    if (tab === 'popular') return photos.filter(p => p.likes > 0).sort((a,b) => b.likes - a.likes);
+    return photos;
   }
 
-  function renderGallery() {
-    renderStats();
-    const grid = document.getElementById('gallery-grid');
-    if (allPhotos.length === 0) {
-      grid.innerHTML = '<div class="gallery-empty">まだ写真がありません<br>最初の一枚を撮りましょう</div>';
+  function switchTab(t) {
+    tab = t;
+    ['all','popular','mine'].forEach(x =>
+      document.getElementById('tab-' + x).classList.toggle('on', x === t));
+    render();
+  }
+
+  function esc(s) {
+    return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  }
+
+  function render() {
+    const my = mine(), got = my.reduce((s,p) => s + (p.likes||0), 0);
+    document.getElementById('stats').innerHTML = tab === 'mine'
+      ? `<div class="stat"><div class="stat-n">${my.length}</div><div class="stat-l">じぶんの</div></div>
+         <div class="stat"><div class="stat-n">${got}</div><div class="stat-l">もらったハート</div></div>
+         <div class="stat"><div class="stat-n">${getLeft()}</div><div class="stat-l">のこり</div></div>`
+      : `<div class="stat"><div class="stat-n">${photos.length}</div><div class="stat-l">みんなの</div></div>
+         <div class="stat"><div class="stat-n">${my.length}</div><div class="stat-l">じぶんの</div></div>
+         <div class="stat"><div class="stat-n">${getLeft()}</div><div class="stat-l">のこり</div></div>`;
+
+    document.getElementById('dl-zone').classList.toggle('on', tab === 'mine' && my.length > 0);
+
+    const list = visible(), grid = document.getElementById('grid');
+    if (!list.length) {
+      const msg = {
+        mine:    'まだ撮影していません<br>カメラから撮ってみましょう',
+        popular: 'まだハートがついた写真はありません<br>いいなと思った写真に送りましょう',
+        all:     'まだ写真がありません<br>さいしょの一枚を撮りましょう'
+      }[tab];
+      grid.innerHTML = `<div class="empty">${msg}</div>`;
       return;
     }
-    grid.innerHTML = allPhotos.map((p, i) => `
-      <div class="g-item" onclick="openLb(${i})">
-        <img src="${p.url}" alt="写真" loading="lazy">
-        <div class="g-meta">${p.mine ? '✦ ' : ''}${p.time}</div>
-      </div>
-    `).join('');
+    grid.innerHTML = list.map(p => `
+      <div class="cell${p.mine ? ' mine' : ''}" onclick="openLb('${p.public_id}')">
+        ${p.likes > 0 ? `<div class="cell-like${p.likedByMe ? ' on' : ''}">${HEART}${p.likes}</div>` : ''}
+        <img src="${thumbUrl(p.url, 80)}" alt="${esc(p.name||'')}さんの写真" loading="lazy">
+        <div class="cell-who">${esc(p.name || '')}</div>
+      </div>`).join('');
   }
 
-  let currentLbIndex = -1;
-
-  function openLb(i) {
-    currentLbIndex = i;
-    const p = allPhotos[i];
-    document.getElementById('lb-img').src = p.url;
-    document.getElementById('lb-meta').textContent = `テーブル ${p.table} · 席 ${p.seat} · ${p.time}`;
-    const delBtn = document.getElementById('lb-delete');
-    delBtn.style.display = p.mine ? 'block' : 'none';
-    document.getElementById('lightbox').classList.add('open');
+  // ═══════════ ライトボックス ═══════════
+  function openLb(id) {
+    const p = photos.find(x => x.public_id === id);
+    if (!p) return;
+    lbId = id;
+    document.getElementById('lb-img').src = viewUrl(p.url);
+    document.getElementById('lb-meta').innerHTML = `${esc(p.name || '')}<br>${p.time}`;
+    document.getElementById('lb-btns').style.display = p.mine ? 'flex' : 'none';
+    syncLike(p);
+    document.getElementById('lb').classList.add('on');
   }
-  function closeLb() { document.getElementById('lightbox').classList.remove('open'); }
+  function closeLb() { document.getElementById('lb').classList.remove('on'); }
+
+  // ═══════════ ハート ═══════════
+  function syncLike(p) {
+    const b = document.getElementById('lb-like');
+    b.classList.toggle('ro', !!p.mine);                 // 自分の写真には押せない
+    b.classList.toggle('on', !p.mine && !!p.likedByMe);
+    document.getElementById('lb-n').textContent = p.likes || 0;
+  }
+
+  async function toggleLike() {
+    const p = photos.find(x => x.public_id === lbId);
+    if (!p || p.mine || likeBusy) return;
+
+    const next = !p.likedByMe;
+    p.likedByMe = next;
+    p.likes = Math.max(0, (p.likes || 0) + (next ? 1 : -1));
+    syncLike(p);
+    if (next) {
+      const b = document.getElementById('lb-like');
+      b.classList.remove('pop'); void b.offsetWidth; b.classList.add('pop');
+    }
+
+    likeBusy = true;
+    try {
+      const r = await fetch('/api/like', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ public_id: p.public_id, guest: GUEST_ID, liked: next })
+      });
+      if (!r.ok) throw new Error();
+      render();
+    } catch(e) {
+      p.likedByMe = !next;
+      p.likes = Math.max(0, (p.likes || 0) + (next ? -1 : 1));
+      syncLike(p);
+      toast('うまく送れませんでした');
+    } finally { likeBusy = false; }
+  }
+
+  // ═══════════ 保存 ═══════════
+  async function downloadOne() {
+    const p = photos.find(x => x.public_id === lbId);
+    if (!p) return;
+    try {
+      const b = await (await fetch(p.url)).blob();
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(b);
+      a.download = `wedding_${p.time.replace(':','')}.jpg`;
+      a.click();
+      toast('保存しました');
+    } catch(e) { window.open(p.url, '_blank'); }
+  }
+
+  async function downloadMine() {
+    const list = mine();
+    if (!list.length) { toast('保存できる写真がありません'); return; }
+    const btn = document.getElementById('dl-btn'), msg = document.getElementById('dl-msg');
+    btn.disabled = true; msg.classList.add('on');
+
+    const zip = new JSZip(), folder = zip.folder('my_wedding_photos');
+    for (let i = 0; i < list.length; i++) {
+      msg.textContent = `じゅんび中… ${i+1} / ${list.length}`;
+      try { folder.file(`photo_${String(i+1).padStart(2,'0')}.jpg`, await (await fetch(list[i].url)).blob()); }
+      catch(e) { /* 1枚失敗しても続ける */ }
+    }
+    msg.textContent = 'ファイルを作成中…';
+    try {
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(await zip.generateAsync({ type: 'blob' }));
+      a.download = `wedding_photos_${clean(getName())}.zip`;
+      a.click();
+      msg.textContent = '保存しました';
+    } catch(e) { msg.textContent = '保存に失敗しました'; }
+    setTimeout(() => { btn.disabled = false; msg.classList.remove('on'); }, 2500);
+  }
+
+  // ═══════════ 削除 ═══════════
+  function askDelete() { document.getElementById('m-del').classList.add('on'); }
+  function closeDelModal() { document.getElementById('m-del').classList.remove('on'); }
 
   async function deletePhoto() {
-    if (currentLbIndex < 0) return;
-    const p = allPhotos[currentLbIndex];
-    if (!p.mine) return;
-    if (!confirm('この写真を削除しますか？\n（撮影枚数は復活しません）')) return;
-
+    closeDelModal();
+    const p = photos.find(x => x.public_id === lbId);
+    if (!p || !p.mine) return;
     try {
-      const res = await fetch('/api/delete', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      const r = await fetch('/api/delete', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ public_id: p.public_id })
       });
-      if (!res.ok) throw new Error();
-      allPhotos.splice(currentLbIndex, 1);
-      closeLb();
-      renderGallery();
-      toast('写真を削除しました');
-    } catch(e) {
-      toast('削除に失敗しました。もう一度お試しください。');
-    }
+      if (!r.ok) throw new Error();
+      photos = photos.filter(x => x.public_id !== p.public_id);
+      closeLb(); render(); toast('写真を削除しました');
+    } catch(e) { toast('削除に失敗しました'); }
   }
 
-  let toastTimer;
-  function toast(msg) {
+  // ═══════════ トースト ═══════════
+  let tt;
+  function toast(m) {
     const el = document.getElementById('toast');
-    el.textContent = msg;
-    el.classList.add('show');
-    clearTimeout(toastTimer);
-    toastTimer = setTimeout(() => el.classList.remove('show'), 2400);
+    el.textContent = m; el.classList.add('on');
+    clearTimeout(tt); tt = setTimeout(() => el.classList.remove('on'), 2400);
   }
 
-  function makeDemoBlob() {
+  // ═══════════ カメラが使えないとき用 ═══════════
+  function demoBlob() {
     const cv = document.getElementById('snap');
     cv.width = 800; cv.height = 1000;
-    const ctx = cv.getContext('2d');
-    const palettes = [['#F5ECD7','#B8915A'],['#E8F0DE','#5A8C5E'],['#EDE0F0','#8B5E9A'],['#FDE8E0','#C4745A'],['#E0EDF5','#5A8CA4']];
-    const [bg, fg] = palettes[allPhotos.length % palettes.length];
-    ctx.fillStyle = bg; ctx.fillRect(0,0,800,1000);
-    ctx.fillStyle = fg;
-    ctx.font = '120px serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-    const emojis = ['🌸','🥂','💐','🎊','💍','🕊️','🍰','✨'];
-    ctx.fillText(emojis[allPhotos.length % emojis.length], 400, 380);
-    ctx.font = '500 28px sans-serif';
-    ctx.fillText(`テーブル ${TABLE} · 席 ${SEAT}`, 400, 530);
-    const dataURL = cv.toDataURL('image/jpeg', 0.85);
-    const bin = atob(dataURL.split(',')[1]);
-    const arr = new Uint8Array(bin.length);
-    for(let i=0;i<bin.length;i++) arr[i]=bin.charCodeAt(i);
-    return new Blob([arr], {type:'image/jpeg'});
+    const g = cv.getContext('2d');
+    const pal = [['#FDF8F0','#E8B555'],['#F6EDDF','#A8C89E'],['#FFFFFF','#EE9098'],['#F7E3B4','#BFD8E6']];
+    const [bg, fg] = pal[photos.length % pal.length];
+    g.fillStyle = bg; g.fillRect(0,0,800,1000);
+    g.fillStyle = fg;
+    for (let i = 0; i < 90; i++) {
+      g.fillRect(Math.floor(Math.random()*20)*40, Math.floor(Math.random()*25)*40, 40, 40);
+    }
+    g.fillStyle = '#2A231E';
+    g.font = '600 34px monospace'; g.textAlign = 'center';
+    g.fillText(getName() + ' さん', 400, 520);
+    const d = cv.toDataURL('image/jpeg', 0.85), b = atob(d.split(',')[1]);
+    const arr = new Uint8Array(b.length);
+    for (let i = 0; i < b.length; i++) arr[i] = b.charCodeAt(i);
+    return new Blob([arr], { type: 'image/jpeg' });
   }
+
+  const HEART = `<svg class="ico" width="11" height="9.6" viewBox="0 0 8 7" aria-hidden="true"><path d="M1 0h2v1h-2zM5 0h2v1h-2zM0 1h8v1h-8zM0 2h8v1h-8zM0 3h8v1h-8zM1 4h6v1h-6zM2 5h4v1h-4zM3 6h2v1h-2z"/></svg>`;
+
+  // ═══════════ 紙ふぶき ═══════════
+  (function confetti() {
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const wrap = document.getElementById('confetti');
+    const cols = ['#E8B555','#EE9098','#FFFFFF','#F7E3B4','#A8C89E','#BFD8E6'];
+    for (let i = 0; i < 14; i++) {
+      const el = document.createElement('i');
+      // 文字の邪魔をしないよう、小さく薄くする
+      const size = 4 + (i % 3) * 2;
+      el.style.width = el.style.height = size + 'px';
+      el.style.left = (3 + i * 7 + (i % 4) * 2) + '%';
+      el.style.background = cols[i % cols.length];
+      el.style.opacity = i % 3 === 0 ? '.6' : '.42';
+      // steps()でカクカク落とすと8bitらしくなる
+      el.style.animationDuration = (11 + (i % 6) * 2.5) + 's';
+      el.style.animationDelay = (-i * 1.7) + 's';
+      el.style.animationTimingFunction = `steps(${34 + (i % 5) * 6})`;
+      wrap.appendChild(el);
+    }
+  })();
+
+  boot();
 </script>
 </body>
 </html>

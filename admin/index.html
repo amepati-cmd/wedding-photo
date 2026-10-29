@@ -2,306 +2,487 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Wedding Photo - 管理ページ</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Wedding Photo 管理</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DotGothic16&family=Silkscreen:wght@400;700&display=swap">
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300&family=Zen+Kaku+Gothic+New:wght@300;400;500&display=swap');
-
+  /* ゲスト用アプリと同じ8bit調・同じ16色パレット */
   :root {
-    --cream: #FAF8F3;
-    --beige: #F2EDE4;
-    --beige2: #E8E0D4;
-    --gold: #B8915A;
-    --gold-light: #E8D5B0;
-    --dark: #2C2118;
-    --mid: #6B5744;
-    --sub: #9A876F;
+    --ink:   #2A231E;
+    --ink2:  #453A31;
+    --shade: #635649;
+    --mid:   #827566;
+    --warm:  #9E9282;
+    --warm2: #B7AC9C;
+    --pale:  #CBC2B3;
+    --pale2: #DCD4C7;
+    --cream: #F6EDDF;
+    --paper: #FDF8F0;
+    --white: #FFFFFF;
+    --gold:  #E8B555;
+    --gold2: #F7E3B4;
+    --rose:  #EE9098;
+    --px: 'DotGothic16', 'Hiragino Kaku Gothic ProN', monospace;
+    --dp: 'Silkscreen', 'DotGothic16', monospace;
   }
 
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { background: var(--cream); font-family: 'Zen Kaku Gothic New', sans-serif; color: var(--dark); min-height: 100vh; }
-
-  .header { text-align: center; padding: 40px 20px 30px; border-bottom: 1px solid var(--beige2); }
-  .header-ornament { font-family: 'Cormorant Garamond', serif; font-size: 12px; letter-spacing: 10px; color: var(--gold); margin-bottom: 6px; }
-  .header-title { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 300; color: var(--dark); letter-spacing: 3px; margin-bottom: 4px; }
-  .header-sub { font-size: 12px; color: var(--sub); letter-spacing: 1px; }
-
-  .container { max-width: 800px; margin: 0 auto; padding: 30px 20px 60px; }
-
-  /* STATS */
-  .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 30px; }
-  .stat-card { background: var(--beige); border-radius: 8px; padding: 16px; text-align: center; }
-  .stat-n { font-family: 'Cormorant Garamond', serif; font-size: 36px; font-weight: 300; color: var(--dark); line-height: 1; }
-  .stat-l { font-size: 11px; color: var(--sub); margin-top: 4px; letter-spacing: 0.5px; }
-
-  /* DOWNLOAD SECTION */
-  .section { background: #fff; border: 1px solid var(--beige2); border-radius: 10px; padding: 24px; margin-bottom: 20px; }
-  .section-title { font-size: 14px; font-weight: 500; color: var(--dark); margin-bottom: 6px; letter-spacing: 1px; }
-  .section-desc { font-size: 12px; color: var(--sub); line-height: 1.8; margin-bottom: 18px; }
-
-  .btn-download {
-    width: 100%; padding: 16px;
-    background: var(--gold); color: #fff;
-    border: none; border-radius: 6px; cursor: pointer;
-    font-family: 'Zen Kaku Gothic New', sans-serif;
-    font-size: 14px; letter-spacing: 2px;
-    transition: opacity 0.15s;
-    display: flex; align-items: center; justify-content: center; gap: 8px;
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  body {
+    min-height: 100vh; font-family: var(--px); color: var(--ink);
+    background-color: var(--paper);
+    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAIAAAAlC+aJAAABxUlEQVR42u1aPUvEQBDdC0Ehh62FXBGusLeTK3Kdv8TfYXG/w19ynRZy3fUWYnFYXHVwRFQQLAaGJYlmNzuzH3GGFHMQyHv7sjszLzf5/jiolCNTiQcBgcfXd1GgOx5ennrvmbjsgcbaV2VBi363383OZ8v5wk6Br+c3uHqfUZUFgMaEED3gXs4Xf+uQtdF35p4DcSMTIwKA+LO+h8uQA+3auypAG/V6U683esKrADn63xJDDr07uOMUarwzJ5cX7gT0mN5c89YBHbEL+k6s5Ohd64CVDhzofVRiwM2E3ocC0o0KASEgBAgJHLer43bVzj2HPofkVujPru4gUUphDkmoyNN6YXDtIanKwq6QNdYec/80cAgJVomx7R3QMoYnQNi0ByCAgyv8PJ3eunCQQhY6kt8DYRQgHFxloBECxARMHO14CYCjnRaHTEdv6KfGWwcMvymMUIHBLnQUCvgxcY02saGjPcJeqCGCt+UnK2Q6Yp/oKSsxtwudTDNnOytncaJXxh95I1Jg2Kws7fT/nIkJZ+W4FBgwK49oJub2/pn+2JUj4gi9fwsCrNE29VlOIW7vX/fEkzxGkycglVgICAEhMEoCPy7KQeuB5tqnAAAAAElFTkSuQmCC);     /* ゲスト用と同じドット壁紙 */
+    background-size: 64px 64px;
+    image-rendering: pixelated;
+    padding-bottom: 108px;
   }
-  .btn-download:hover { opacity: 0.9; }
-  .btn-download:disabled { opacity: 0.4; cursor: not-allowed; }
+  .bunting {
+    height: 40px;
+    background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADwAAAAUCAYAAADRA14pAAAA9UlEQVR42u3XLxKCQBTH8beM51jCkuAAFhJ3MHEGOYDBYQhkR4rJ5owXsJoMcgBJEiSZvMIz4Qw7LPvHorP769+yn7KPhIwiWDQPLNsMAOC8nSsHSVZD03YEACBkFC/LlXIbV+Wgvd0fym0U+IN2fciV2yLNP611wl7TdiTJam1dAICm7Uhcldq6fRsFvrZu3xZprq1rp3D/YjJlXldHmdfVUeZ1dZR5XXuFZcoiXRVlka6KskhXRXlM125hkbJMd0pZpjulLNOdUhbpWik8upBRfJ4WaPLPDhnF12Zn3CKicXu87tH4NvjmqPjH1s3Nzc3tF/YGnUOxqcXXqKEAAAAASUVORK5CYII=) repeat-x top center;
+    background-size: 120px 40px;
+    image-rendering: pixelated;
+  }
+  svg { shape-rendering: crispEdges; }
+  .ico { display: block; fill: currentColor; }
 
-  .progress-wrap { margin-top: 16px; display: none; }
-  .progress-wrap.show { display: block; }
-  .progress-bar-bg { background: var(--beige2); border-radius: 4px; height: 6px; overflow: hidden; margin-bottom: 8px; }
-  .progress-bar { height: 100%; background: var(--gold); border-radius: 4px; transition: width 0.3s; width: 0%; }
-  .progress-text { font-size: 12px; color: var(--sub); text-align: center; }
+  .hdr {
+    background: var(--white); color: var(--ink); text-align: center;
+    padding: calc(22px + env(safe-area-inset-top,0px)) 16px 20px;
+    border-bottom: 4px solid var(--rose);
+  }
+  .hdr-t { font-family: var(--dp); font-weight: 700; font-size: 17px; letter-spacing: 3px; }
+  .hdr-s { font-size: 11px; color: var(--mid); letter-spacing: 2px; margin-top: 7px; }
 
-  /* GALLERY PREVIEW */
-  .gallery-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
-  .gallery-filter { display: flex; gap: 8px; flex-wrap: wrap; }
-  .filter-btn { padding: 5px 12px; border: 1px solid var(--beige2); border-radius: 20px; background: var(--beige); color: var(--mid); font-size: 11px; cursor: pointer; font-family: 'Zen Kaku Gothic New', sans-serif; transition: all 0.15s; }
-  .filter-btn.active { background: var(--gold); color: #fff; border-color: var(--gold); }
+  .wrap {
+    max-width: 880px; margin: 0 auto;
+    padding-block: 22px 40px;
+    padding-left: max(16px, env(safe-area-inset-left,0px));
+    padding-right: max(16px, env(safe-area-inset-right,0px));
+  }
 
-  .photo-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
-  @media (max-width: 500px) { .photo-grid { grid-template-columns: repeat(3, 1fr); } }
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    padding: 12px 16px; cursor: pointer; font-family: var(--px); font-size: 13px; letter-spacing: 1px;
+    border: 3px solid var(--ink); box-shadow: 4px 4px 0 var(--ink);
+    background: var(--white); color: var(--ink);
+  }
+  .btn:active { transform: translate(4px,4px); box-shadow: 0 0 0 var(--ink); }
+  .btn:disabled { opacity: .4; pointer-events: none; }
+  .btn.gold { background: var(--gold); color: var(--ink); }
+  .btn.rose { background: var(--rose); color: var(--ink); }
+  .btn.on   { background: var(--rose); color: var(--ink); }
+  .btn.sm   { padding: 9px 13px; font-size: 12px; box-shadow: 3px 3px 0 var(--ink); }
+  .btn.sm:active { transform: translate(3px,3px); }
+  .btn.wide { width: 100%; padding: 15px; font-size: 14px; }
 
-  .photo-item { aspect-ratio: 1; border-radius: 6px; overflow: hidden; position: relative; cursor: pointer; background: var(--beige2); }
-  .photo-item img { width: 100%; height: 100%; object-fit: cover; }
-  .photo-item .p-meta { position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(0,0,0,0.5)); padding: 12px 4px 4px; font-size: 9px; color: rgba(255,255,255,0.9); text-align: center; }
+  /* 統計 */
+  .stats { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 10px; margin-bottom: 12px; }
+  .stat { background: var(--white); border: 3px solid var(--ink); box-shadow: 4px 4px 0 var(--ink); padding: 14px 6px; text-align: center; }
+  .stat-n { font-family: var(--dp); font-weight: 700; font-size: 28px; line-height: 1; }
+  .stat-l { font-size: 10.5px; color: var(--mid); margin-top: 7px; letter-spacing: .5px; }
 
-  .loading { padding: 40px; text-align: center; color: var(--sub); font-size: 13px; }
-  .empty { padding: 40px; text-align: center; color: var(--sub); font-size: 13px; line-height: 2; }
+  .toolbar { display: flex; justify-content: flex-end; margin-bottom: 24px; }
 
-  /* LIGHTBOX */
-  .lightbox { display: none; position: fixed; inset: 0; z-index: 200; background: rgba(20,14,8,0.94); flex-direction: column; align-items: center; justify-content: center; padding: 20px; }
-  .lightbox.open { display: flex; }
-  .lightbox img { max-width: 100%; max-height: 75vh; border-radius: 4px; }
-  .lb-meta { color: rgba(255,255,255,0.5); font-size: 11px; margin-top: 10px; }
-  .lb-close { position: absolute; top: 18px; right: 18px; background: rgba(255,255,255,0.1); border: none; color: #fff; width: 36px; height: 36px; border-radius: 50%; cursor: pointer; font-size: 18px; }
-  .lb-dl { margin-top: 14px; padding: 8px 20px; background: var(--gold); color: #fff; border: none; border-radius: 20px; cursor: pointer; font-size: 12px; font-family: 'Zen Kaku Gothic New', sans-serif; }
+  .panel { background: var(--white); border: 3px solid var(--ink); box-shadow: 5px 5px 0 var(--ink); padding: 18px; margin-bottom: 22px; }
+  .panel-h { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-bottom: 12px; }
+  .panel-t { display: flex; align-items: center; gap: 9px; font-family: var(--px); font-size: 14px; letter-spacing: 1px; }
+  .panel-d { font-size: 11.5px; color: var(--mid); line-height: 1.95; margin-bottom: 16px; }
 
-  .toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: var(--dark); color: #fff; padding: 10px 20px; border-radius: 20px; font-size: 12px; opacity: 0; pointer-events: none; transition: opacity 0.3s; z-index: 300; white-space: nowrap; }
-  .toast.show { opacity: 1; }
+  .prog { margin-top: 14px; display: none; }
+  .prog.on { display: block; }
+  .bar-bg { height: 14px; background: var(--cream); border: 3px solid var(--ink); padding: 2px; }
+  .bar { height: 100%; width: 0%; background: var(--gold); }
+  .prog-t { font-size: 11px; color: var(--mid); text-align: center; margin-top: 7px; }
+
+  .filters { display: flex; gap: 7px; flex-wrap: wrap; margin-bottom: 16px; }
+  .chip {
+    padding: 7px 12px; cursor: pointer; font-family: var(--px); font-size: 11.5px;
+    background: var(--cream); color: var(--ink2); border: 3px solid var(--ink);
+  }
+  .chip.on { background: var(--gold); color: var(--ink); }
+
+  .grid { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 8px; }
+  @media (max-width: 620px) { .grid { grid-template-columns: repeat(2, minmax(0,1fr)); } }
+
+  .cell { aspect-ratio: 1; position: relative; cursor: pointer; background: var(--pale2); border: 3px solid var(--ink); overflow: hidden; }
+  .cell img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .cell-who { position: absolute; left:0; right:0; bottom:0; background: var(--ink); color: var(--white); font-size: 9.5px; padding: 4px 3px; text-align: center; line-height: 1.5; }
+  .cell-like { position: absolute; top: 4px; right: 4px; background: var(--rose); color: var(--ink); font-size: 10px; padding: 3px 6px; display: flex; align-items: center; gap: 3px; }
+  .check {
+    position: absolute; top: 4px; left: 4px; width: 24px; height: 24px; display: none;
+    background: var(--white); border: 3px solid var(--ink); color: var(--ink);
+    align-items: center; justify-content: center;
+  }
+  body.picking .check { display: flex; }
+  .cell.sel { border-color: var(--gold); }
+  .cell.sel .check { background: var(--gold); }
+  .cell.sel img { opacity: .55; }
+
+  .empty, .loading { grid-column: 1/-1; padding: 44px 20px; text-align: center; font-size: 12.5px; line-height: 2.1; color: var(--mid); }
+
+  /* 選択バー */
+  .actionbar {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 150; display: none;
+    background: var(--ink); border-top: 4px solid var(--gold);
+    padding: 13px max(16px, env(safe-area-inset-left,0px));
+    padding-bottom: calc(13px + env(safe-area-inset-bottom,0px));
+    align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;
+  }
+  .actionbar.on { display: flex; }
+  .acount { color: var(--white); font-size: 12.5px; }
+  .acount b { font-family: var(--dp); font-weight: 700; font-size: 21px; color: var(--gold); margin-right: 3px; }
+  .abtns { display: flex; gap: 8px; flex-wrap: wrap; }
+
+  /* ライトボックス */
+  .lb { display: none; position: fixed; inset: 0; z-index: 200; background: rgba(30,25,22,.96); flex-direction: column; align-items: center; justify-content: center; padding: 22px; }
+  .lb.on { display: flex; }
+  .lb img { max-width: 100%; max-height: 62vh; border: 3px solid var(--white); }
+  .lb-meta { color: var(--warm2); font-size: 11.5px; margin-top: 13px; text-align: center; }
+  .lb-x { position: absolute; top: calc(16px + env(safe-area-inset-top,0px)); right: 16px; background: var(--ink2); border: 3px solid var(--warm); color: var(--white); width: 40px; height: 40px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+  .lb-btns { display: flex; gap: 10px; margin-top: 16px; }
+
+  /* モーダル */
+  .modal { display: none; position: fixed; inset: 0; z-index: 250; background: rgba(30,25,22,.72); align-items: center; justify-content: center; padding: 24px; }
+  .modal.on { display: flex; }
+  .modal-in { background: var(--white); border: 3px solid var(--ink); box-shadow: 7px 7px 0 var(--ink); padding: 22px 18px 18px; max-width: 330px; width: 100%; text-align: center; }
+  .modal-l { font-family: var(--dp); font-size: 12px; letter-spacing: 1px; margin-bottom: 13px; }
+  .modal-t { font-size: 12px; line-height: 2.05; color: var(--ink2); margin-bottom: 18px; }
+  .modal-t b { font-family: var(--dp); font-size: 17px; color: #C4555E; }
+  .modal-b { display: flex; gap: 9px; }
+  .modal-b .btn { flex: 1; }
+
+  .toast {
+    position: fixed; left: 50%; transform: translateX(-50%); bottom: 96px;
+    background: var(--ink); color: var(--white); border: 3px solid var(--gold);
+    padding: 10px 17px; font-size: 12px; z-index: 300; opacity: 0; pointer-events: none;
+    max-width: 88vw; text-align: center;
+  }
+  .toast.on { opacity: 1; }
 </style>
 </head>
 <body>
 
-<div class="header">
-  <div class="header-ornament">✦ &nbsp; ✦ &nbsp; ✦</div>
-  <div class="header-title">Wedding Photo 管理ページ</div>
-  <div class="header-sub">Saaya &amp; Toshiki · 運営専用</div>
+<div class="hdr">
+  <div class="hdr-t">WEDDING PHOTO</div>
+  <div class="hdr-s">かんりページ・うんえい専用</div>
 </div>
+<div class="bunting" aria-hidden="true"></div>
 
-<div class="container">
+<div class="wrap">
 
-  <!-- 統計 -->
-  <div class="stats" id="stats">
-    <div class="stat-card"><div class="stat-n" id="stat-total">—</div><div class="stat-l">合計枚数</div></div>
-    <div class="stat-card"><div class="stat-n" id="stat-tables">—</div><div class="stat-l">テーブル数</div></div>
-    <div class="stat-card"><div class="stat-n" id="stat-size">—</div><div class="stat-l">概算サイズ</div></div>
+  <div class="stats">
+    <div class="stat"><div class="stat-n" id="s-total">—</div><div class="stat-l">ごうけい枚数</div></div>
+    <div class="stat"><div class="stat-n" id="s-people">—</div><div class="stat-l">撮影した人数</div></div>
+    <div class="stat"><div class="stat-n" id="s-likes">—</div><div class="stat-l">ハートの合計</div></div>
+  </div>
+  <div class="toolbar">
+    <button class="btn sm" onclick="load(true)"><svg class="ico" width="13" height="13.0" viewBox="0 0 8 8" aria-hidden="true"><path d="M2 0h4v1h-4zM1 1h2v1h-2zM5 1h2v1h-2zM0 2h2v1h-2zM6 2h2v1h-2zM0 3h2v1h-2zM0 4h2v1h-2zM6 4h2v1h-2zM1 5h2v1h-2zM5 5h2v1h-2zM2 6h4v1h-4zM4 7h2v1h-2z"/></svg>さいしんに更新</button>
   </div>
 
-  <!-- ZIPダウンロード -->
-  <div class="section">
-    <div class="section-title">📦 全写真をZIPでダウンロード</div>
-    <div class="section-desc">
-      全員が撮影した写真をまとめてZIPファイルでダウンロードします。<br>
-      写真枚数によって数分かかる場合があります。
+  <div class="panel">
+    <div class="panel-t"><svg class="ico" width="14" height="14.0" viewBox="0 0 8 8" aria-hidden="true"><path d="M3 0h2v1h-2zM3 1h2v1h-2zM3 2h2v1h-2zM0 3h8v1h-8zM1 4h6v1h-6zM2 5h4v1h-4zM3 6h2v1h-2zM0 7h8v1h-8z"/></svg>ZIPでダウンロード</div>
+    <div class="panel-d" style="margin-top:12px">
+      いま表示している写真をまとめて保存します。<br>
+      枚数が多いと数分かかることがあります。
     </div>
-    <button class="btn-download" id="zip-btn" onclick="downloadZip()">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-      全写真をまとめてダウンロード
+    <button class="btn gold wide" id="zip" onclick="downloadZip()">
+      <svg class="ico" width="14" height="14.0" viewBox="0 0 8 8" aria-hidden="true"><path d="M3 0h2v1h-2zM3 1h2v1h-2zM3 2h2v1h-2zM0 3h8v1h-8zM1 4h6v1h-6zM2 5h4v1h-4zM3 6h2v1h-2zM0 7h8v1h-8z"/></svg><span id="zip-l">ぜんぶダウンロード</span>
     </button>
-    <div class="progress-wrap" id="progress-wrap">
-      <div class="progress-bar-bg"><div class="progress-bar" id="progress-bar"></div></div>
-      <div class="progress-text" id="progress-text">準備中...</div>
+    <div class="prog" id="prog">
+      <div class="bar-bg"><div class="bar" id="bar"></div></div>
+      <div class="prog-t" id="prog-t">じゅんび中…</div>
     </div>
   </div>
 
-  <!-- 写真一覧 -->
-  <div class="section">
-    <div class="gallery-header">
-      <div class="section-title">🖼 写真一覧</div>
-      <div class="gallery-filter" id="filter-btns">
-        <button class="filter-btn active" onclick="filterPhotos('all', this)">すべて</button>
+  <div class="panel">
+    <div class="panel-h">
+      <div class="panel-t"><svg class="ico" width="15" height="13.3" viewBox="0 0 9 8" aria-hidden="true"><path d="M0 0h9v1h-9zM0 1h1v1h-1zM8 1h1v1h-1zM0 2h1v1h-1zM3 2h1v1h-1zM8 2h1v1h-1zM0 3h1v1h-1zM8 3h1v1h-1zM0 4h1v1h-1zM5 4h1v1h-1zM8 4h1v1h-1zM0 5h1v1h-1zM4 5h3v1h-3zM8 5h1v1h-1zM0 6h1v1h-1zM2 6h7v1h-7zM0 7h9v1h-9z"/></svg>しゃしん一覧</div>
+      <div style="display:flex;gap:8px;">
+        <button class="btn sm" id="sort" onclick="toggleSort()">新しい順</button>
+        <button class="btn sm" id="pick" onclick="togglePick()">選択する</button>
       </div>
     </div>
-    <div class="photo-grid" id="photo-grid">
-      <div class="loading" style="grid-column:1/-1">読み込み中...</div>
-    </div>
+    <div class="filters" id="filters"></div>
+    <div class="grid" id="grid"><div class="loading">よみこみ中…</div></div>
   </div>
 
 </div>
 
-<!-- LIGHTBOX -->
-<div class="lightbox" id="lightbox" onclick="closeLb(event)">
-  <button class="lb-close" onclick="closeLb()">✕</button>
-  <img id="lb-img" src="" alt="写真拡大">
+<div class="actionbar" id="abar">
+  <div class="acount"><b id="sel-n">0</b>枚を選択中</div>
+  <div class="abtns">
+    <button class="btn sm" onclick="selectAll()">表示中を全選択</button>
+    <button class="btn sm" onclick="clearSel()">かいじょ</button>
+    <button class="btn sm rose" id="bulk" onclick="askDelete('bulk')"><svg class="ico" width="14" height="14.0" viewBox="0 0 8 8" aria-hidden="true"><path d="M3 0h2v1h-2zM1 1h6v1h-6zM0 2h8v1h-8zM1 3h6v1h-6zM1 4h1v1h-1zM3 4h2v1h-2zM6 4h1v1h-1zM1 5h1v1h-1zM3 5h2v1h-2zM6 5h1v1h-1zM1 6h1v1h-1zM3 6h2v1h-2zM6 6h1v1h-1zM1 7h6v1h-6z"/></svg>削除</button>
+  </div>
+</div>
+
+<div class="lb" id="lb">
+  <button class="lb-x" onclick="closeLb(event)" aria-label="閉じる"><svg class="ico" width="14" height="14.0" viewBox="0 0 8 8" aria-hidden="true"><path d="M0 0h2v1h-2zM6 0h2v1h-2zM0 1h3v1h-3zM5 1h3v1h-3zM1 2h6v1h-6zM2 3h4v1h-4zM2 4h4v1h-4zM1 5h6v1h-6zM0 6h3v1h-3zM5 6h3v1h-3zM0 7h2v1h-2zM6 7h2v1h-2z"/></svg></button>
+  <img id="lb-img" src="" alt="写真の拡大表示">
   <div class="lb-meta" id="lb-meta"></div>
-  <button class="lb-dl" onclick="downloadSingle()">この写真をダウンロード</button>
+  <div class="lb-btns">
+    <button class="btn sm gold" onclick="downloadOne(event)"><svg class="ico" width="14" height="14.0" viewBox="0 0 8 8" aria-hidden="true"><path d="M3 0h2v1h-2zM3 1h2v1h-2zM3 2h2v1h-2zM0 3h8v1h-8zM1 4h6v1h-6zM2 5h4v1h-4zM3 6h2v1h-2zM0 7h8v1h-8z"/></svg>ほぞん</button>
+    <button class="btn sm rose" onclick="askDelete('single', event)"><svg class="ico" width="14" height="14.0" viewBox="0 0 8 8" aria-hidden="true"><path d="M3 0h2v1h-2zM1 1h6v1h-6zM0 2h8v1h-8zM1 3h6v1h-6zM1 4h1v1h-1zM3 4h2v1h-2zM6 4h1v1h-1zM1 5h1v1h-1zM3 5h2v1h-2zM6 5h1v1h-1zM1 6h1v1h-1zM3 6h2v1h-2zM6 6h1v1h-1zM1 7h6v1h-6z"/></svg>さくじょ</button>
+  </div>
+</div>
+
+<div class="modal" id="modal">
+  <div class="modal-in">
+    <div class="modal-l">しゃしんを削除します</div>
+    <div class="modal-t" id="modal-t"></div>
+    <div class="modal-b">
+      <button class="btn" onclick="closeModal()">やめる</button>
+      <button class="btn rose" onclick="confirmDelete()">削除する</button>
+    </div>
+  </div>
 </div>
 
 <div class="toast" id="toast"></div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <script>
-  let allPhotos = [];
-  let currentFilter = 'all';
-  let lbIndex = 0;
+  let photos = [], guests = [], filter = 'all', sortMode = 'new';
+  let picking = false, sel = new Set(), lbId = null, pending = null;
 
-  // 写真を取得
-  async function loadPhotos() {
+  // Cloudinaryの変換で一覧用の軽い画像を配信する
+  const thumbUrl = (u, w) => u.replace('/image/upload/', `/image/upload/w_${w},h_${w},c_fill,q_auto,f_auto/`);
+  const viewUrl  = u => u.replace('/image/upload/', '/image/upload/w_1400,q_auto,f_auto/');
+
+  const esc = s => String(s).replace(/[&<>"']/g, c =>
+    ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+  // ───── 取得 ─────
+  async function load(withToast) {
     try {
-      const res = await fetch('/api/photos');
-      const data = await res.json();
-      allPhotos = data.photos || [];
-      renderStats();
-      renderFilterBtns();
-      renderGrid('all');
+      const d = await (await fetch('/api/photos')).json();
+      photos = d.photos || [];
+      const alive = new Set(photos.map(p => p.public_id));
+      sel = new Set([...sel].filter(id => alive.has(id)));
+      buildGuests();
+      if (filter !== 'all' && !guests.some(g => g.guest === filter)) filter = 'all';
+      renderStats(); renderFilters(); renderGrid(); syncBar();
+      if (withToast) toast('さいしんの状態に更新しました');
     } catch(e) {
-      document.getElementById('photo-grid').innerHTML = '<div class="empty">写真の取得に失敗しました。<br>しばらくしてから再読み込みしてください。</div>';
+      document.getElementById('grid').innerHTML =
+        '<div class="empty">写真の取得に失敗しました<br>しばらくしてから更新してください</div>';
     }
   }
 
-  function renderStats() {
-    const tables = [...new Set(allPhotos.map(p => p.table))].length;
-    const sizeMB = (allPhotos.length * 0.8).toFixed(1); // 1枚約0.8MBで概算
-    document.getElementById('stat-total').textContent = allPhotos.length;
-    document.getElementById('stat-tables').textContent = tables;
-    document.getElementById('stat-size').textContent = sizeMB + 'MB';
-  }
-
-  function renderFilterBtns() {
-    const tables = [...new Set(allPhotos.map(p => p.table))].sort();
-    const wrap = document.getElementById('filter-btns');
-    wrap.innerHTML = `<button class="filter-btn active" onclick="filterPhotos('all', this)">すべて</button>`;
-    tables.forEach(t => {
-      const btn = document.createElement('button');
-      btn.className = 'filter-btn';
-      btn.textContent = `テーブル${t}`;
-      btn.onclick = function() { filterPhotos(t, this); };
-      wrap.appendChild(btn);
+  // 撮影者ごとにまとめる。同じ名前が複数いたら番号で区別する
+  function buildGuests() {
+    const map = new Map();
+    photos.forEach(p => {
+      const k = p.guest || '(unknown)';
+      if (!map.has(k)) map.set(k, { guest: k, name: p.name || '名前なし', count: 0 });
+      map.get(k).count++;
     });
+    guests = [...map.values()];
+    const n = {};
+    guests.forEach(g => { n[g.name] = (n[g.name] || 0) + 1; });
+    const seen = {};
+    guests.forEach(g => {
+      if (n[g.name] > 1) { seen[g.name] = (seen[g.name] || 0) + 1; g.label = `${g.name} (${seen[g.name]})`; }
+      else g.label = g.name;
+    });
+    guests.sort((a,b) => b.count - a.count || a.name.localeCompare(b.name, 'ja'));
+  }
+  const guestLabel = id => (guests.find(g => g.guest === id) || {}).label || '名前なし';
+
+  function visible() {
+    const list = filter === 'all' ? photos.slice() : photos.filter(p => p.guest === filter);
+    if (sortMode === 'likes') list.sort((a,b) => (b.likes||0) - (a.likes||0));
+    return list;
   }
 
-  function filterPhotos(table, btn) {
-    currentFilter = table;
-    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    renderGrid(table);
+  // ───── 描画 ─────
+  function renderStats() {
+    document.getElementById('s-total').textContent  = photos.length;
+    document.getElementById('s-people').textContent = guests.length;
+    document.getElementById('s-likes').textContent  = photos.reduce((s,p) => s + (p.likes||0), 0);
   }
 
-  function renderGrid(table) {
-    const photos = table === 'all' ? allPhotos : allPhotos.filter(p => p.table === table);
-    const grid = document.getElementById('photo-grid');
-    if (photos.length === 0) {
-      grid.innerHTML = '<div class="empty" style="grid-column:1/-1">写真がありません</div>';
-      return;
+  function renderFilters() {
+    const w = document.getElementById('filters');
+    w.innerHTML = '';
+    const mk = (label, val) => {
+      const b = document.createElement('button');
+      b.className = 'chip' + (filter === val ? ' on' : '');
+      b.textContent = label;
+      b.onclick = () => { filter = val; renderFilters(); renderGrid(); };
+      w.appendChild(b);
+    };
+    mk(`すべて (${photos.length})`, 'all');
+    guests.forEach(g => mk(`${g.label} (${g.count})`, g.guest));
+  }
+
+  function renderGrid() {
+    const list = visible(), g = document.getElementById('grid');
+    if (!list.length) { g.innerHTML = '<div class="empty">写真がありません</div>'; zipLabel(); return; }
+    g.innerHTML = list.map(p => `
+      <div class="cell${sel.has(p.public_id) ? ' sel' : ''}" data-id="${p.public_id}"
+           onclick="tapCell('${p.public_id}')">
+        <div class="check">${sel.has(p.public_id) ? CHECK : ''}</div>
+        ${p.likes > 0 ? `<div class="cell-like">${HEART}${p.likes}</div>` : ''}
+        <img src="${thumbUrl(p.url, 320)}" alt="${esc(p.name||'')}さんの写真" loading="lazy">
+        <div class="cell-who">${esc(p.name || '名前なし')}<br>${p.time}</div>
+      </div>`).join('');
+    zipLabel();
+  }
+
+  function zipLabel() {
+    const n = visible().length;
+    document.getElementById('zip-l').textContent =
+      filter === 'all' ? `ぜんぶダウンロード（${n}枚）` : `${guestLabel(filter)}さんの分（${n}枚）`;
+  }
+
+  function toggleSort() {
+    sortMode = sortMode === 'new' ? 'likes' : 'new';
+    const b = document.getElementById('sort');
+    b.textContent = sortMode === 'likes' ? 'ハート順' : '新しい順';
+    b.classList.toggle('on', sortMode === 'likes');
+    renderGrid();
+  }
+
+  // ───── 選択 ─────
+  function togglePick() {
+    picking = !picking;
+    document.body.classList.toggle('picking', picking);
+    const b = document.getElementById('pick');
+    b.classList.toggle('on', picking);
+    b.textContent = picking ? '選択をやめる' : '選択する';
+    if (!picking) sel.clear();
+    renderGrid(); syncBar();
+  }
+
+  function tapCell(id) {
+    if (!picking) { openLb(id); return; }
+    sel.has(id) ? sel.delete(id) : sel.add(id);
+    const el = document.querySelector(`.cell[data-id="${CSS.escape(id)}"]`);
+    if (el) {
+      el.classList.toggle('sel', sel.has(id));
+      el.querySelector('.check').innerHTML = sel.has(id) ? CHECK : '';
     }
-    grid.innerHTML = photos.map((p, i) => `
-      <div class="photo-item" onclick="openLb(${allPhotos.indexOf(p)})">
-        <img src="${p.url}" alt="写真" loading="lazy">
-        <div class="p-meta">T${p.table}-${p.seat}<br>${p.time}</div>
-      </div>
-    `).join('');
+    syncBar();
   }
 
-  // ライトボックス
-  function openLb(i) {
-    lbIndex = i;
-    const p = allPhotos[i];
-    document.getElementById('lb-img').src = p.url;
-    document.getElementById('lb-meta').textContent = `テーブル${p.table} · 席${p.seat} · ${p.time}`;
-    document.getElementById('lightbox').classList.add('open');
+  const selectAll = () => { visible().forEach(p => sel.add(p.public_id)); renderGrid(); syncBar(); };
+  const clearSel  = () => { sel.clear(); renderGrid(); syncBar(); };
+
+  function syncBar() {
+    document.getElementById('abar').classList.toggle('on', picking);
+    document.getElementById('sel-n').textContent = sel.size;
+    document.getElementById('bulk').disabled = sel.size === 0;
+  }
+
+  // ───── ライトボックス ─────
+  function openLb(id) {
+    const p = photos.find(x => x.public_id === id);
+    if (!p) return;
+    lbId = id;
+    document.getElementById('lb-img').src = viewUrl(p.url);
+    document.getElementById('lb-meta').textContent =
+      `${p.name || '名前なし'} ・ ${p.time}` + (p.likes ? ` ・ ハート ${p.likes}` : '');
+    document.getElementById('lb').classList.add('on');
   }
   function closeLb(e) {
-    if (!e || e.target === document.getElementById('lightbox') || e.target.classList.contains('lb-close')) {
-      document.getElementById('lightbox').classList.remove('open');
-    }
+    if (!e || e.target === document.getElementById('lb') || e.currentTarget.classList.contains('lb-x'))
+      document.getElementById('lb').classList.remove('on');
   }
 
-  // 1枚ダウンロード
-  async function downloadSingle() {
-    const p = allPhotos[lbIndex];
+  async function downloadOne(e) {
+    if (e) e.stopPropagation();
+    const p = photos.find(x => x.public_id === lbId);
+    if (!p) return;
     try {
-      const res = await fetch(p.url);
-      const blob = await res.blob();
+      const b = await (await fetch(p.url)).blob();
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(b);
+      a.download = `wedding_${(p.name || 'guest')}_${p.time.replace(':','')}.jpg`;
+      a.click();
+    } catch(err) { window.open(p.url, '_blank'); }
+  }
+
+  // ───── 削除 ─────
+  function askDelete(mode, e) {
+    if (e) e.stopPropagation();
+    pending = mode;
+    const n = mode === 'single' ? 1 : sel.size;
+    if (!n) return;
+    document.getElementById('modal-t').innerHTML =
+      `<b>${n}枚</b>の写真を削除します。<br>削除した写真は元に戻せません。<br>ゲストの撮影できる枚数は変わりません。`;
+    document.getElementById('modal').classList.add('on');
+  }
+  function closeModal() { document.getElementById('modal').classList.remove('on'); pending = null; }
+
+  async function confirmDelete() {
+    const ids = pending === 'single' ? [lbId] : [...sel];
+    closeModal();
+    if (!ids.length || ids.some(x => !x)) { toast('削除できませんでした'); return; }
+    toast(`削除中… (${ids.length}枚)`);
+    try {
+      const res = await fetch('/api/delete', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ public_ids: ids })
+      });
+      const d = await res.json();
+      if (!res.ok) throw new Error(d.error || 'failed');
+      const gone = new Set(d.deleted || ids);
+      photos = photos.filter(p => !gone.has(p.public_id));
+      gone.forEach(id => sel.delete(id));
+      document.getElementById('lb').classList.remove('on');
+      buildGuests();
+      if (filter !== 'all' && !guests.some(g => g.guest === filter)) filter = 'all';
+      renderStats(); renderFilters(); renderGrid(); syncBar();
+      const bad = (d.failed || []).length;
+      toast(bad ? `${d.deleted_count}枚を削除（${bad}枚は失敗）` : `${d.deleted_count}枚を削除しました`);
+    } catch(err) { toast('削除に失敗しました'); }
+  }
+
+  // ───── ZIP ─────
+  async function downloadZip() {
+    const list = visible();
+    if (!list.length) { toast('写真がありません'); return; }
+    const btn = document.getElementById('zip'), pr = document.getElementById('prog');
+    const bar = document.getElementById('bar'), txt = document.getElementById('prog-t');
+    btn.disabled = true; pr.classList.add('on');
+
+    const zip = new JSZip(), folder = zip.folder('wedding_photos');
+    for (let i = 0; i < list.length; i++) {
+      const p = list[i];
+      bar.style.width = Math.round(i / list.length * 80) + '%';
+      txt.textContent = `しゃしんを取得中… ${i+1} / ${list.length}`;
+      try {
+        const who = (p.name || 'guest').replace(/[\\/:*?"<>|]/g, '');
+        folder.file(`${who}_${String(i+1).padStart(3,'0')}.jpg`, await (await fetch(p.url)).blob());
+      } catch(e) { /* 1枚失敗しても続ける */ }
+    }
+    bar.style.width = '90%'; txt.textContent = 'ZIPを作成中…';
+    try {
+      const blob = await zip.generateAsync({ type: 'blob', compression: 'DEFLATE' });
+      bar.style.width = '100%'; txt.textContent = '完了！ダウンロードを開始します';
+      const today = new Date().toLocaleDateString('ja-JP').replace(/\//g, '-');
+      const who = filter === 'all' ? 'all' : guestLabel(filter).replace(/[\\/:*?"<>|\s]/g, '');
       const a = document.createElement('a');
       a.href = URL.createObjectURL(blob);
-      a.download = `wedding_T${p.table}_${p.seat}_${p.time.replace(':', '')}.jpg`;
+      a.download = `wedding_photos_${who}_${today}.zip`;
       a.click();
-    } catch(e) {
-      // CORSエラーの場合は別タブで開く
-      window.open(p.url, '_blank');
-    }
+    } catch(e) { toast('ZIPの作成に失敗しました'); }
+    setTimeout(() => { btn.disabled = false; pr.classList.remove('on'); bar.style.width = '0%'; }, 3000);
   }
 
-  // ZIPダウンロード
-  async function downloadZip() {
-    if (allPhotos.length === 0) { toast('写真がありません'); return; }
-
-    const btn = document.getElementById('zip-btn');
-    const progressWrap = document.getElementById('progress-wrap');
-    const progressBar = document.getElementById('progress-bar');
-    const progressText = document.getElementById('progress-text');
-
-    btn.disabled = true;
-    progressWrap.classList.add('show');
-
-    const zip = new JSZip();
-    const folder = zip.folder('wedding_photos');
-
-    for (let i = 0; i < allPhotos.length; i++) {
-      const p = allPhotos[i];
-      const pct = Math.round((i / allPhotos.length) * 80);
-      progressBar.style.width = pct + '%';
-      progressText.textContent = `写真を取得中... ${i + 1} / ${allPhotos.length}`;
-
-      try {
-        const res = await fetch(p.url);
-        const blob = await res.blob();
-        const filename = `T${p.table}_${p.seat}_${String(i+1).padStart(3,'0')}.jpg`;
-        folder.file(filename, blob);
-      } catch(e) {
-        console.warn('取得失敗:', p.url);
-      }
-    }
-
-    progressBar.style.width = '90%';
-    progressText.textContent = 'ZIPを作成中...';
-
-    try {
-      const content = await zip.generateAsync({ type: 'blob', compression: 'DEFLATE' });
-      progressBar.style.width = '100%';
-      progressText.textContent = '完了！ダウンロードを開始します';
-
-      const today = new Date().toLocaleDateString('ja-JP').replace(/\//g, '-');
-      const a = document.createElement('a');
-      a.href = URL.createObjectURL(content);
-      a.download = `wedding_photos_${today}.zip`;
-      a.click();
-    } catch(e) {
-      toast('ZIPの作成に失敗しました');
-    }
-
-    setTimeout(() => {
-      btn.disabled = false;
-      progressWrap.classList.remove('show');
-      progressBar.style.width = '0%';
-    }, 3000);
-  }
-
-  let toastTimer;
-  function toast(msg) {
+  let tt;
+  function toast(m) {
     const el = document.getElementById('toast');
-    el.textContent = msg;
-    el.classList.add('show');
-    clearTimeout(toastTimer);
-    toastTimer = setTimeout(() => el.classList.remove('show'), 2500);
+    el.textContent = m; el.classList.add('on');
+    clearTimeout(tt); tt = setTimeout(() => el.classList.remove('on'), 2500);
   }
 
-  loadPhotos();
+  const HEART = `<svg class="ico" width="10" height="8.8" viewBox="0 0 8 7" aria-hidden="true"><path d="M1 0h2v1h-2zM5 0h2v1h-2zM0 1h8v1h-8zM0 2h8v1h-8zM0 3h8v1h-8zM1 4h6v1h-6zM2 5h4v1h-4zM3 6h2v1h-2z"/></svg>`;
+  const CHECK = `<svg class="ico" width="13" height="9.8" viewBox="0 0 8 6" aria-hidden="true"><path d="M6 0h2v1h-2zM5 1h2v1h-2zM0 2h2v1h-2zM4 2h2v1h-2zM0 3h2v1h-2zM3 3h2v1h-2zM0 4h4v1h-4zM1 5h2v1h-2z"/></svg>`;
+
+  load();
 </script>
 </body>
 </html>
