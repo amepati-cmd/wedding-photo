@@ -125,27 +125,68 @@
   .name-in:focus { box-shadow: 4px 4px 0 var(--gold); }
   .name-note { font-size: 11px; color: var(--mid); line-height: 1.9; text-align: center; margin-bottom: 22px; }
 
+  /* ───── ひとこと ───── */
+  .note {
+    max-width: 310px; margin-top: 14px; padding: 9px 11px; text-align: center;
+    font-size: 10.5px; line-height: 1.95; color: var(--ink2);
+    background: rgba(255,255,255,.86); border: 2px solid var(--pale2);
+  }
+  .capbar {
+    position: absolute; left: 0; right: 0; bottom: 0; z-index: 6; display: none;
+    background: rgba(30,25,22,.94); border-top: 3px solid var(--gold); padding: 11px 12px 12px;
+  }
+  .capbar.on { display: block; }
+  .capbar-h { color: var(--warm2); font-size: 10.5px; letter-spacing: 1px; margin-bottom: 8px; }
+  .capbar-h span { color: var(--mid); }
+  .capbar-r { display: flex; gap: 7px; }
+  .cap-in {
+    flex: 1; min-width: 0; padding: 10px; font-size: 14px; font-family: var(--px);
+    color: var(--ink); background: var(--white); border: 3px solid var(--ink); outline: none;
+  }
+  .cap-go {
+    flex-shrink: 0; padding: 0 14px; cursor: pointer; font-family: var(--px); font-size: 13px;
+    color: var(--ink); background: var(--gold); border: 3px solid var(--ink);
+  }
+  .cap-go:active { background: var(--gold2); }
+  .cap-x {
+    position: absolute; top: -34px; right: 10px; width: 30px; height: 30px; cursor: pointer; padding: 0;
+    background: var(--ink2); border: 3px solid var(--warm); color: var(--white);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .cell-cap { position: absolute; top: 3px; right: 3px; background: var(--gold); padding: 3px 4px; display: flex; }
+  .cell-cap .ico { fill: var(--ink); }
+  .rank-foot { position: absolute; left: 0; right: 0; bottom: 0; }
+  .rank-cap {
+    background: var(--gold); color: var(--ink); font-size: 9.5px; padding: 3px 5px;
+    text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .lb-cap {
+    max-width: 330px; margin-top: 14px; padding: 8px 12px; text-align: center;
+    color: var(--white); font-size: 12.5px; line-height: 1.8;
+    background: rgba(232,181,85,.16); border-left: 4px solid var(--gold); border-right: 4px solid var(--gold);
+  }
+
   /* ───── ウェルカム ───── */
-  .wel { padding-block: 22px 32px; display: flex; flex-direction: column; align-items: center; }
-  .photo-frame { padding: 7px; background: var(--white); border: 3px solid var(--ink); box-shadow: 6px 6px 0 var(--ink); margin-bottom: 18px; }
-  .photo-frame img { display: block; width: 184px; height: 184px; }
+  .wel { padding-block: 14px 26px; display: flex; flex-direction: column; align-items: center; }
+  .photo-frame { padding: 7px; background: var(--white); border: 3px solid var(--ink); box-shadow: 5px 5px 0 var(--ink); margin-bottom: 14px; }
+  .photo-frame img { display: block; width: 152px; height: 152px; }
   .names { font-family: var(--dp); font-weight: 700; font-size: 20px; letter-spacing: 1px; text-align: center; line-height: 1.5; display: flex; align-items: center; justify-content: center; gap: 10px; flex-wrap: wrap; }
   .names .ico { fill: var(--rose); }
   .date { font-family: var(--dp); font-size: 12px; color: var(--mid); letter-spacing: 2px; margin-top: 10px; text-align: center; }
   .hero-card {
     width: 100%; background: var(--white); border: 3px solid var(--ink);
-    box-shadow: 5px 5px 0 var(--ink); padding: 18px 16px 16px;
+    box-shadow: 5px 5px 0 var(--ink); padding: 14px 14px 12px;
   }
-  .rule { width: 100%; height: 3px; background: var(--ink); margin: 14px 0; }
-  .msg { font-size: 12.5px; line-height: 2.1; text-align: center; color: var(--ink2); }
+  .rule { width: 100%; height: 3px; background: var(--ink); margin: 11px 0; }
+  .msg { font-size: 12.5px; line-height: 1.95; text-align: center; color: var(--ink2); }
   .chip {
-    display: inline-flex; align-items: center; gap: 7px; margin: 16px 0 14px;
+    display: inline-flex; align-items: center; gap: 7px; margin: 12px 0 10px;
     background: var(--gold2); border: 3px solid var(--ink); padding: 7px 14px;
     font-size: 13px; letter-spacing: 1px;
   }
-  .guide { width: 100%; background: var(--cream); border: 3px solid var(--ink); padding: 12px 14px; font-size: 11.5px; line-height: 2.1; text-align: center; color: var(--ink2); margin-bottom: 20px; }
+  .guide { width: 100%; background: var(--cream); border: 3px solid var(--ink); padding: 10px 12px; font-size: 11.5px; line-height: 1.9; text-align: center; color: var(--ink2); margin-bottom: 14px; }
   .guide b { font-family: var(--dp); font-size: 15px; color: var(--gold); }
-  .btn-stack { width: 100%; display: flex; flex-direction: column; gap: 12px; }
+  .btn-stack { width: 100%; display: flex; flex-direction: column; gap: 10px; }
 
   /* ───── カメラ ───── */
   #screen-camera { background: var(--ink); }
@@ -195,6 +236,45 @@
   }
   .tab.on { background: var(--rose); color: var(--ink); }
 
+  /* ───── ランキング ───── */
+  .btn.rank { background: var(--rose); color: var(--ink); }
+  .rank-top { display: flex; align-items: stretch; gap: 8px; padding: 14px 14px 0; }
+  .rank-note {
+    flex: 1; min-width: 0; display: flex; align-items: center;
+    background: var(--white); border: 3px solid var(--ink);
+    padding: 7px 10px; font-size: 11px; color: var(--ink2); line-height: 1.65;
+  }
+  .btn-reload {
+    flex-shrink: 0; display: flex; align-items: center; gap: 6px; cursor: pointer;
+    background: var(--white); border: 3px solid var(--ink); box-shadow: 3px 3px 0 var(--ink);
+    font-family: var(--px); font-size: 11px; padding: 7px 11px; color: var(--ink);
+  }
+  .btn-reload:active { transform: translate(3px,3px); box-shadow: 0 0 0 var(--ink); }
+
+  .tier { padding: 14px 14px 0; }
+  .tier-h { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+  .badge {
+    display: flex; align-items: center; gap: 5px; padding: 5px 10px;
+    border: 3px solid var(--ink); font-size: 13px; color: var(--ink);
+  }
+  .badge.g1 { background: #F5C84A; }
+  .badge.g2 { background: #DCD8CE; }
+  .badge.g3 { background: #E0AE7E; }
+  .tier-n { font-size: 11.5px; color: var(--mid); display: flex; align-items: center; gap: 4px; }
+  .tier-n .ico { fill: var(--rose); }
+  .tier-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; }
+  .rank-cell { position: relative; cursor: pointer; background: var(--pale2); border: 3px solid var(--ink); overflow: hidden; aspect-ratio: 1; }
+  .rank-cell.w1 { width: 100%; aspect-ratio: 4/3; }
+  .rank-cell.w2 { width: calc(50% - 3px); }
+  .rank-cell.w3 { width: calc(33.333% - 4px); }
+  .rank-cell img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .rank-who {
+    background: var(--ink); color: var(--white);
+    font-size: 10px; padding: 4px 3px; text-align: center; display: flex; align-items: center; justify-content: center; gap: 5px;
+  }
+  .rank-who .ico { fill: var(--rose); }
+  .rank-empty { padding: 56px 24px; text-align: center; font-size: 12.5px; line-height: 2.2; color: var(--mid); }
+
   /* ───── 統計 ───── */
   .stats { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 7px; padding: 12px 14px; }
   .stat { background: var(--white); border: 3px solid var(--ink); padding: 9px 4px; text-align: center; }
@@ -233,6 +313,7 @@
   .lb-like.on .ico { fill: var(--ink); }
   .lb-like.ro { opacity: .55; cursor: default; }
   .lb-like.pop .ico { animation: pop .35s steps(3); }
+  .lb-hint { color: var(--warm2); font-size: 10.5px; margin-top: 8px; letter-spacing: .5px; }
   @keyframes pop { 0%{transform:scale(1)} 50%{transform:scale(1.5)} 100%{transform:scale(1)} }
   .lb-btns { display: flex; gap: 10px; margin-top: 14px; }
 
@@ -248,7 +329,7 @@
 
   /* ───── 下ナビ ───── */
   .nav { flex-shrink: 0; display: flex; background: var(--white); border-top: 4px solid var(--ink); padding-bottom: env(safe-area-inset-bottom, 0px); }
-  .nav button { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 5px; background: none; border: none; cursor: pointer; color: var(--mid); font-family: var(--px); font-size: 10px; letter-spacing: 1px; padding: 10px 0; }
+  .nav button { flex: 1; min-width: 0; display: flex; flex-direction: column; align-items: center; gap: 5px; background: none; border: none; cursor: pointer; color: var(--mid); font-family: var(--px); font-size: 9.5px; letter-spacing: 0; padding: 10px 2px; }
   .nav button.on { color: var(--rose); }
 
   /* ───── トースト ───── */
@@ -316,12 +397,14 @@
       <div class="guide">
         おひとり <b>25まい</b> まで写真が撮れます<br>
         撮った写真はみんなで共有されます<br>
-        いいなと思った写真にはハートを送れます
+        いいなと思った写真に <b>5つ</b> までハートを送れます
       </div>
       <div class="btn-stack">
         <button class="btn" onclick="startCamera()"><svg class="ico" width="17" height="13.6" viewBox="0 0 10 8" aria-hidden="true"><path d="M3 0h3v1h-3zM0 1h10v1h-10zM0 2h4v1h-4zM6 2h4v1h-4zM0 3h3v1h-3zM7 3h3v1h-3zM0 4h3v1h-3zM7 4h3v1h-3zM0 5h4v1h-4zM6 5h4v1h-4zM0 6h10v1h-10zM0 7h10v1h-10z"/></svg>撮影をはじめる</button>
         <button class="btn sub" onclick="showGallery()"><svg class="ico" width="16" height="14.2" viewBox="0 0 9 8" aria-hidden="true"><path d="M0 0h9v1h-9zM0 1h1v1h-1zM8 1h1v1h-1zM0 2h1v1h-1zM3 2h1v1h-1zM8 2h1v1h-1zM0 3h1v1h-1zM8 3h1v1h-1zM0 4h1v1h-1zM5 4h1v1h-1zM8 4h1v1h-1zM0 5h1v1h-1zM4 5h3v1h-3zM8 5h1v1h-1zM0 6h1v1h-1zM2 6h7v1h-7zM0 7h9v1h-9z"/></svg>みんなの写真を見る</button>
+        <button class="btn rank" onclick="showRank()"><svg class="ico" width="17" height="11.3" viewBox="0 0 9 6" aria-hidden="true"><path d="M0 0h1v1h-1zM4 0h1v1h-1zM8 0h1v1h-1zM0 1h1v1h-1zM3 1h3v1h-3zM8 1h1v1h-1zM0 2h1v1h-1zM2 2h5v1h-5zM8 2h1v1h-1zM0 3h9v1h-9zM0 4h9v1h-9zM1 5h7v1h-7z"/></svg>ハートランキング</button>
       </div>
+      <div class="note">みなさまが気持ちよく楽しめるよう、<br>内容によっては運営側で写真やひとことを<br>削除させていただく場合があります</div>
       <div class="garden" aria-hidden="true"></div>
     </div>
   </div>
@@ -336,6 +419,14 @@
     <div class="corner c-bl"></div><div class="corner c-br"></div>
     <div class="flash" id="flash"></div>
     <div class="busy" id="busy"><div class="blocks"><i></i><i></i><i></i></div></div>
+    <div class="capbar" id="capbar">
+      <button class="cap-x" onclick="hideCapBar()" aria-label="閉じる"><svg class="ico" width="11" height="11.0" viewBox="0 0 8 8" aria-hidden="true"><path d="M0 0h2v1h-2zM6 0h2v1h-2zM0 1h3v1h-3zM5 1h3v1h-3zM1 2h6v1h-6zM2 3h4v1h-4zM2 4h4v1h-4zM1 5h6v1h-6zM0 6h3v1h-3zM5 6h3v1h-3zM0 7h2v1h-2zM6 7h2v1h-2z"/></svg></button>
+      <div class="capbar-h">ひとことをそえる <span>（なくてもOK）</span></div>
+      <div class="capbar-r">
+        <input class="cap-in" id="cap-in" type="text" maxlength="30" placeholder="れい：かんぱいのしゅんかん" autocomplete="off">
+        <button class="cap-go" onclick="sendCapBar()">そえる</button>
+      </div>
+    </div>
   </div>
   <div class="cam-bar">
     <div class="hud">
@@ -349,6 +440,7 @@
     <button onclick="showScreen('welcome')"><svg class="ico" width="16" height="14.2" viewBox="0 0 9 8" aria-hidden="true"><path d="M4 0h1v1h-1zM3 1h3v1h-3zM2 2h5v1h-5zM1 3h7v1h-7zM0 4h9v1h-9zM1 5h7v1h-7zM1 6h3v1h-3zM5 6h3v1h-3zM1 7h3v1h-3zM5 7h3v1h-3z"/></svg>ホーム</button>
     <button class="on"><svg class="ico" width="17" height="13.6" viewBox="0 0 10 8" aria-hidden="true"><path d="M3 0h3v1h-3zM0 1h10v1h-10zM0 2h4v1h-4zM6 2h4v1h-4zM0 3h3v1h-3zM7 3h3v1h-3zM0 4h3v1h-3zM7 4h3v1h-3zM0 5h4v1h-4zM6 5h4v1h-4zM0 6h10v1h-10zM0 7h10v1h-10z"/></svg>カメラ</button>
     <button onclick="showGallery()"><svg class="ico" width="16" height="14.2" viewBox="0 0 9 8" aria-hidden="true"><path d="M0 0h9v1h-9zM0 1h1v1h-1zM8 1h1v1h-1zM0 2h1v1h-1zM3 2h1v1h-1zM8 2h1v1h-1zM0 3h1v1h-1zM8 3h1v1h-1zM0 4h1v1h-1zM5 4h1v1h-1zM8 4h1v1h-1zM0 5h1v1h-1zM4 5h3v1h-3zM8 5h1v1h-1zM0 6h1v1h-1zM2 6h7v1h-7zM0 7h9v1h-9z"/></svg>ギャラリー</button>
+    <button onclick="showRank()"><svg class="ico" width="17" height="11.3" viewBox="0 0 9 6" aria-hidden="true"><path d="M0 0h1v1h-1zM4 0h1v1h-1zM8 0h1v1h-1zM0 1h1v1h-1zM3 1h3v1h-3zM8 1h1v1h-1zM0 2h1v1h-1zM2 2h5v1h-5zM8 2h1v1h-1zM0 3h9v1h-9zM0 4h9v1h-9zM1 5h7v1h-7z"/></svg>ランキング</button>
   </nav>
 </div>
 
@@ -376,6 +468,29 @@
     <button onclick="showScreen('welcome')"><svg class="ico" width="16" height="14.2" viewBox="0 0 9 8" aria-hidden="true"><path d="M4 0h1v1h-1zM3 1h3v1h-3zM2 2h5v1h-5zM1 3h7v1h-7zM0 4h9v1h-9zM1 5h7v1h-7zM1 6h3v1h-3zM5 6h3v1h-3zM1 7h3v1h-3zM5 7h3v1h-3z"/></svg>ホーム</button>
     <button onclick="startCamera()"><svg class="ico" width="17" height="13.6" viewBox="0 0 10 8" aria-hidden="true"><path d="M3 0h3v1h-3zM0 1h10v1h-10zM0 2h4v1h-4zM6 2h4v1h-4zM0 3h3v1h-3zM7 3h3v1h-3zM0 4h3v1h-3zM7 4h3v1h-3zM0 5h4v1h-4zM6 5h4v1h-4zM0 6h10v1h-10zM0 7h10v1h-10z"/></svg>カメラ</button>
     <button class="on"><svg class="ico" width="16" height="14.2" viewBox="0 0 9 8" aria-hidden="true"><path d="M0 0h9v1h-9zM0 1h1v1h-1zM8 1h1v1h-1zM0 2h1v1h-1zM3 2h1v1h-1zM8 2h1v1h-1zM0 3h1v1h-1zM8 3h1v1h-1zM0 4h1v1h-1zM5 4h1v1h-1zM8 4h1v1h-1zM0 5h1v1h-1zM4 5h3v1h-3zM8 5h1v1h-1zM0 6h1v1h-1zM2 6h7v1h-7zM0 7h9v1h-9z"/></svg>ギャラリー</button>
+    <button onclick="showRank()"><svg class="ico" width="17" height="11.3" viewBox="0 0 9 6" aria-hidden="true"><path d="M0 0h1v1h-1zM4 0h1v1h-1zM8 0h1v1h-1zM0 1h1v1h-1zM3 1h3v1h-3zM8 1h1v1h-1zM0 2h1v1h-1zM2 2h5v1h-5zM8 2h1v1h-1zM0 3h9v1h-9zM0 4h9v1h-9zM1 5h7v1h-7z"/></svg>ランキング</button>
+  </nav>
+</div>
+
+<!-- ═══ ランキング ═══ -->
+<div id="screen-rank" class="screen">
+  <div class="hdr">
+    <button class="hdr-back" onclick="showScreen('welcome')" aria-label="ホームに戻る"><svg class="ico" width="14" height="14.0" viewBox="0 0 8 8" aria-hidden="true"><path d="M3 0h2v1h-2zM2 1h2v1h-2zM1 2h2v1h-2zM0 3h8v1h-8zM0 4h8v1h-8zM1 5h2v1h-2zM2 6h2v1h-2zM3 7h2v1h-2z"/></svg></button>
+    <div class="hdr-t">RANKING</div>
+    <div class="hdr-s">ハートの多いしゃしん</div>
+  </div>
+  <div class="scroll flush">
+    <div class="rank-top">
+      <div class="rank-note">ハートの多い順に3位まで<br>同じ数なら並んで入ります</div>
+      <button class="btn-reload" onclick="reloadRank()"><svg class="ico" width="13" height="13.0" viewBox="0 0 8 8" aria-hidden="true"><path d="M2 0h4v1h-4zM1 1h2v1h-2zM5 1h2v1h-2zM0 2h2v1h-2zM6 2h2v1h-2zM0 3h2v1h-2zM0 4h2v1h-2zM6 4h2v1h-2zM1 5h2v1h-2zM5 5h2v1h-2zM2 6h4v1h-4zM4 7h2v1h-2z"/></svg>さいしん</button>
+    </div>
+    <div id="rank-body"><div class="rank-empty">よみこみ中…</div></div>
+  </div>
+  <nav class="nav">
+    <button onclick="showScreen('welcome')"><svg class="ico" width="16" height="14.2" viewBox="0 0 9 8" aria-hidden="true"><path d="M4 0h1v1h-1zM3 1h3v1h-3zM2 2h5v1h-5zM1 3h7v1h-7zM0 4h9v1h-9zM1 5h7v1h-7zM1 6h3v1h-3zM5 6h3v1h-3zM1 7h3v1h-3zM5 7h3v1h-3z"/></svg>ホーム</button>
+    <button onclick="startCamera()"><svg class="ico" width="17" height="13.6" viewBox="0 0 10 8" aria-hidden="true"><path d="M3 0h3v1h-3zM0 1h10v1h-10zM0 2h4v1h-4zM6 2h4v1h-4zM0 3h3v1h-3zM7 3h3v1h-3zM0 4h3v1h-3zM7 4h3v1h-3zM0 5h4v1h-4zM6 5h4v1h-4zM0 6h10v1h-10zM0 7h10v1h-10z"/></svg>カメラ</button>
+    <button onclick="showGallery()"><svg class="ico" width="16" height="14.2" viewBox="0 0 9 8" aria-hidden="true"><path d="M0 0h9v1h-9zM0 1h1v1h-1zM8 1h1v1h-1zM0 2h1v1h-1zM3 2h1v1h-1zM8 2h1v1h-1zM0 3h1v1h-1zM8 3h1v1h-1zM0 4h1v1h-1zM5 4h1v1h-1zM8 4h1v1h-1zM0 5h1v1h-1zM4 5h3v1h-3zM8 5h1v1h-1zM0 6h1v1h-1zM2 6h7v1h-7zM0 7h9v1h-9z"/></svg>ギャラリー</button>
+    <button class="on"><svg class="ico" width="17" height="11.3" viewBox="0 0 9 6" aria-hidden="true"><path d="M0 0h1v1h-1zM4 0h1v1h-1zM8 0h1v1h-1zM0 1h1v1h-1zM3 1h3v1h-3zM8 1h1v1h-1zM0 2h1v1h-1zM2 2h5v1h-5zM8 2h1v1h-1zM0 3h9v1h-9zM0 4h9v1h-9zM1 5h7v1h-7z"/></svg>ランキング</button>
   </nav>
 </div>
 
@@ -383,11 +498,14 @@
 <div class="lb" id="lb">
   <button class="lb-x" onclick="closeLb()" aria-label="閉じる"><svg class="ico" width="13" height="13.0" viewBox="0 0 8 8" aria-hidden="true"><path d="M0 0h2v1h-2zM6 0h2v1h-2zM0 1h3v1h-3zM5 1h3v1h-3zM1 2h6v1h-6zM2 3h4v1h-4zM2 4h4v1h-4zM1 5h6v1h-6zM0 6h3v1h-3zM5 6h3v1h-3zM0 7h2v1h-2zM6 7h2v1h-2z"/></svg></button>
   <img class="lb-img" id="lb-img" src="" alt="写真の拡大表示" onclick="closeLb()">
+  <div class="lb-cap" id="lb-cap" style="display:none"></div>
   <div class="lb-meta" id="lb-meta"></div>
   <button class="lb-like" id="lb-like" onclick="toggleLike()">
     <svg class="ico" width="15" height="13.1" viewBox="0 0 8 7" aria-hidden="true"><path d="M1 0h2v1h-2zM5 0h2v1h-2zM0 1h8v1h-8zM0 2h8v1h-8zM0 3h8v1h-8zM1 4h6v1h-6zM2 5h4v1h-4zM3 6h2v1h-2z"/></svg><span id="lb-n">0</span>
   </button>
+  <div class="lb-hint" id="lb-hint"></div>
   <div class="lb-btns" id="lb-btns" style="display:none">
+    <button class="btn sm sub" onclick="askCaption()"><svg class="ico" width="15" height="11.3" viewBox="0 0 8 6" aria-hidden="true"><path d="M0 0h8v1h-8zM0 1h1v1h-1zM7 1h1v1h-1zM0 2h1v1h-1zM7 2h1v1h-1zM0 3h8v1h-8zM1 4h2v1h-2zM1 5h1v1h-1z"/></svg>ひとこと</button>
     <button class="btn sm sub" onclick="downloadOne()"><svg class="ico" width="15" height="15.0" viewBox="0 0 8 8" aria-hidden="true"><path d="M3 0h2v1h-2zM3 1h2v1h-2zM3 2h2v1h-2zM0 3h8v1h-8zM1 4h6v1h-6zM2 5h4v1h-4zM3 6h2v1h-2zM0 7h8v1h-8z"/></svg>ほぞん</button>
     <button class="btn sm rose" onclick="askDelete()"><svg class="ico" width="15" height="15.0" viewBox="0 0 8 8" aria-hidden="true"><path d="M3 0h2v1h-2zM1 1h6v1h-6zM0 2h8v1h-8zM1 3h6v1h-6zM1 4h1v1h-1zM3 4h2v1h-2zM6 4h1v1h-1zM1 5h1v1h-1zM3 5h2v1h-2zM6 5h1v1h-1zM1 6h1v1h-1zM3 6h2v1h-2zM6 6h1v1h-1zM1 7h6v1h-6z"/></svg>さくじょ</button>
   </div>
@@ -402,6 +520,19 @@
     <div class="modal-b">
       <button class="btn sub" onclick="closeNameModal()">書き直す</button>
       <button class="btn" onclick="confirmName()">これでOK</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ ひとことの編集 ═══ -->
+<div class="modal" id="m-cap">
+  <div class="modal-in">
+    <div class="modal-l">ひとことをそえる</div>
+    <input class="name-in" id="cap-in2" type="text" maxlength="30" placeholder="30文字まで" autocomplete="off">
+    <div class="modal-t">写真をひらいたときに表示されます。<br>あとから書き直せます。からにすると消えます。</div>
+    <div class="modal-b">
+      <button class="btn sub" onclick="closeCapModal()">やめる</button>
+      <button class="btn" onclick="saveCapModal()">ほぞん</button>
     </div>
   </div>
 </div>
@@ -427,6 +558,8 @@
   const CLOUD   = 'dd528t1sx';
   const PRESET  = 'wedding_upload';
   const MAX_SHOTS = 25;
+  const MAX_LIKES = 5;      // ひとりが送れるハートの数
+  const MAX_CAP   = 30;     // ひとことの文字数
 
   // ═══════════ ゲストID・名前 ═══════════
   function getGuestId() {
@@ -441,12 +574,16 @@
   const getName = () => localStorage.getItem('guestName') || '';
   const setName = n => localStorage.setItem('guestName', n);
   const clean   = n => n.replace(/[|=\r\n]/g, '').trim().slice(0, 12);
+  // Cloudinaryのcontextは「キー=値|キー=値」の形なので区切り文字は落とす
+  const cleanCap = s => String(s || '').replace(/[|=\r\n]/g, '').trim().slice(0, MAX_CAP);
 
   const getLeft  = () => { const v = localStorage.getItem('shots-' + GUEST_ID); return v !== null ? parseInt(v) : MAX_SHOTS; };
   const saveLeft = n => localStorage.setItem('shots-' + GUEST_ID, String(n));
 
   // ═══════════ 状態 ═══════════
   let stream = null, demo = false, photos = [], tab = 'all', lbId = null, likeBusy = false;
+  let myLikes = 0;          // 自分が押しているハートの数（サーバーの集計）
+  const likesLeft = () => Math.max(0, MAX_LIKES - myLikes);
 
   // Cloudinaryの変換でサムネイルを小さく配信する。
   // 通信量が減り、拡大時にドット絵として表示される
@@ -465,14 +602,10 @@
     else { showScreen('name'); setTimeout(() => nameIn.focus(), 300); }
   }
 
-  async function showDate() {
-    const f = d => `${d.getFullYear()} . ${String(d.getMonth()+1).padStart(2,'0')} . ${String(d.getDate()).padStart(2,'0')}`;
-    try {
-      const r = await fetch('https://worldtimeapi.org/api/timezone/Asia/Tokyo');
-      document.getElementById('today').textContent = f(new Date((await r.json()).datetime));
-    } catch(e) {
-      document.getElementById('today').textContent = f(new Date());
-    }
+  // 挙式日。リハーサルや当日以外に開いても結婚式の日付が出るように固定しています
+  const WEDDING_DATE = '2026 . 11 . 21';
+  function showDate() {
+    document.getElementById('today').textContent = WEDDING_DATE;
   }
 
   // ═══════════ 名前 ═══════════
@@ -561,10 +694,11 @@
         `<img src="${URL.createObjectURL(blob)}" alt="さいごに撮った写真">`;
       photos.unshift({
         url, public_id, guest: GUEST_ID, name: getName(), mine: true,
-        likes: 0, likers: [], likedByMe: false,
+        likes: 0, likers: [], likedByMe: false, caption: '',
         time: new Date().toLocaleTimeString('ja-JP', { hour: '2-digit', minute: '2-digit' })
       });
       toast(`撮影しました！ のこり ${now} まい`);
+      showCapBar(public_id);
     } catch(e) {
       toast('送信に失敗しました。もう一度お試しください');
     } finally {
@@ -586,17 +720,78 @@
     return { url: d.secure_url, public_id: d.public_id };
   }
 
+  // ═══════════ ひとこと ═══════════
+  let capTarget = null, capTimer = null, capBusy = false;
+
+  // 写真を送ったあと、カメラ画面の下から出てくる入力バー
+  function showCapBar(public_id) {
+    capTarget = public_id;
+    const bar = document.getElementById('capbar'), inp = document.getElementById('cap-in');
+    inp.value = '';
+    bar.classList.add('on');
+    clearTimeout(capTimer);
+    // さわらなければ自動で引っこむ。入力し始めたら消さない
+    capTimer = setTimeout(hideCapBar, 7000);
+  }
+  function hideCapBar() {
+    clearTimeout(capTimer);
+    document.getElementById('capbar').classList.remove('on');
+    document.getElementById('cap-in').blur();
+    capTarget = null;
+  }
+  async function sendCapBar() {
+    const id = capTarget, v = cleanCap(document.getElementById('cap-in').value);
+    hideCapBar();
+    if (!id || !v) return;
+    try { await saveCaption(id, v); toast('ひとことをそえました'); }
+    catch(e) { toast('ひとことを送れませんでした'); }
+  }
+
+  // ライトボックスから editing する
+  function askCaption() {
+    const p = photos.find(x => x.public_id === lbId);
+    if (!p || !p.mine) return;
+    document.getElementById('cap-in2').value = p.caption || '';
+    document.getElementById('m-cap').classList.add('on');
+  }
+  function closeCapModal() { document.getElementById('m-cap').classList.remove('on'); }
+  async function saveCapModal() {
+    const id = lbId, v = cleanCap(document.getElementById('cap-in2').value);
+    closeCapModal();
+    if (!id) return;
+    try {
+      await saveCaption(id, v);
+      const p = photos.find(x => x.public_id === id);
+      if (p) showCaption(p);
+      toast(v ? 'ひとことを保存しました' : 'ひとことを消しました');
+    } catch(e) { toast('うまく保存できませんでした'); }
+  }
+
+  async function saveCaption(public_id, caption) {
+    if (capBusy) return;
+    capBusy = true;
+    try {
+      const r = await fetch('/api/caption', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ public_id, guest: GUEST_ID, caption })
+      });
+      if (!r.ok) throw new Error();
+      const p = photos.find(x => x.public_id === public_id);
+      if (p) p.caption = caption;
+      render();
+    } finally { capBusy = false; }
+  }
+
   // ═══════════ ギャラリー ═══════════
   async function showGallery() { showScreen('gallery'); render(); await load(); }
 
   async function load() {
     document.getElementById('grid').innerHTML = '<div class="loading">よみこみ中…</div>';
     try {
-      const d = await (await fetch('/api/photos')).json();
-      photos = (d.photos || []).map(p => ({
-        ...p, mine: p.guest === GUEST_ID,
-        likes: p.likes || 0, likedByMe: (p.likers || []).includes(GUEST_ID)
-      }));
+      const d = await (await fetch('/api/photos?guest=' + encodeURIComponent(GUEST_ID))).json();
+      photos = (d.photos || []).map(p => ({ ...p, mine: p.guest === GUEST_ID, likes: p.likes || 0 }));
+      myLikes = typeof d.myLikes === 'number'
+        ? d.myLikes : photos.filter(p => p.likedByMe).length;
     } catch(e) { /* 取得できなければ手元のぶんを出す */ }
     render();
   }
@@ -624,10 +819,10 @@
     document.getElementById('stats').innerHTML = tab === 'mine'
       ? `<div class="stat"><div class="stat-n">${my.length}</div><div class="stat-l">じぶんの</div></div>
          <div class="stat"><div class="stat-n">${got}</div><div class="stat-l">もらったハート</div></div>
-         <div class="stat"><div class="stat-n">${getLeft()}</div><div class="stat-l">のこり</div></div>`
+         <div class="stat"><div class="stat-n">${getLeft()}</div><div class="stat-l">のこり枚数</div></div>`
       : `<div class="stat"><div class="stat-n">${photos.length}</div><div class="stat-l">みんなの</div></div>
-         <div class="stat"><div class="stat-n">${my.length}</div><div class="stat-l">じぶんの</div></div>
-         <div class="stat"><div class="stat-n">${getLeft()}</div><div class="stat-l">のこり</div></div>`;
+         <div class="stat"><div class="stat-n">${getLeft()}</div><div class="stat-l">のこり枚数</div></div>
+         <div class="stat"><div class="stat-n">${likesLeft()}</div><div class="stat-l">のこりハート</div></div>`;
 
     document.getElementById('dl-zone').classList.toggle('on', tab === 'mine' && my.length > 0);
 
@@ -639,14 +834,70 @@
         all:     'まだ写真がありません<br>さいしょの一枚を撮りましょう'
       }[tab];
       grid.innerHTML = `<div class="empty">${msg}</div>`;
+      renderRank();
       return;
     }
+    renderRank();
     grid.innerHTML = list.map(p => `
       <div class="cell${p.mine ? ' mine' : ''}" onclick="openLb('${p.public_id}')">
         ${p.likes > 0 ? `<div class="cell-like${p.likedByMe ? ' on' : ''}">${HEART}${p.likes}</div>` : ''}
+        ${p.caption ? `<div class="cell-cap" title="${esc(p.caption)}">${BUBBLE}</div>` : ''}
         <img src="${thumbUrl(p.url, 80)}" alt="${esc(p.name||'')}さんの写真" loading="lazy">
         <div class="cell-who">${esc(p.name || '')}</div>
       </div>`).join('');
+  }
+
+  // ═══════════ ランキング ═══════════
+  async function showRank() {
+    showScreen('rank');
+    renderRank();
+    await load();          // load() の最後で render() → renderRank() が走る
+  }
+  async function reloadRank() {
+    document.getElementById('rank-body').innerHTML = '<div class="rank-empty">よみこみ中…</div>';
+    await load();
+    toast('さいしんの状態にしました');
+  }
+
+  // ハート数の多い順に上位3段。同数はまとめて同じ順位にする
+  function tiers() {
+    const liked = photos.filter(p => (p.likes || 0) > 0);
+    const levels = [...new Set(liked.map(p => p.likes))].sort((a, b) => b - a).slice(0, 3);
+    return levels.map((n, i) => ({
+      rank: i + 1, likes: n,
+      items: liked.filter(p => p.likes === n)
+    }));
+  }
+
+  function renderRank() {
+    const box = document.getElementById('rank-body');
+    const list = tiers();
+    if (!list.length) {
+      box.innerHTML = '<div class="rank-empty">まだハートがついた写真はありません<br>ギャラリーから送ってみましょう</div>';
+      return;
+    }
+    box.innerHTML = list.map(t => {
+      // 1位ほど大きく見せる。1位が1枚だけなら全幅
+      const solo = t.rank === 1 && t.items.length === 1;
+      const w = solo ? 'w1' : (t.rank === 1 ? 'w2' : t.rank === 2 ? 'w2' : 'w3');
+      const px = solo ? 500 : (w === 'w2' ? 300 : 200);
+      const cells = t.items.map(p => `
+        <div class="rank-cell ${w}" onclick="openLb('${p.public_id}')">
+          <img src="${thumbUrl(p.url, px)}" alt="${esc(p.name||'')}さんの写真" loading="lazy">
+          <div class="rank-foot">
+            ${p.caption && w !== 'w3' ? `<div class="rank-cap">${esc(p.caption)}</div>` : ''}
+            <div class="rank-who">${esc(p.name || '')}${HEART}${p.likes}</div>
+          </div>
+        </div>`).join('');
+      return `
+        <div class="tier">
+          <div class="tier-h">
+            <div class="badge g${t.rank}">${CROWN}${t.rank}位</div>
+            <div class="tier-n">${HEART}${t.likes}　${t.items.length}まい</div>
+          </div>
+          <div class="tier-grid">${cells}</div>
+        </div>`;
+    }).join('') + '<div style="height:20px"></div>';
   }
 
   // ═══════════ ライトボックス ═══════════
@@ -655,6 +906,7 @@
     if (!p) return;
     lbId = id;
     document.getElementById('lb-img').src = viewUrl(p.url);
+    showCaption(p);
     document.getElementById('lb-meta').innerHTML = `${esc(p.name || '')}<br>${p.time}`;
     document.getElementById('lb-btns').style.display = p.mine ? 'flex' : 'none';
     syncLike(p);
@@ -662,12 +914,25 @@
   }
   function closeLb() { document.getElementById('lb').classList.remove('on'); }
 
+  function showCaption(p) {
+    const el = document.getElementById('lb-cap');
+    if (p.caption) { el.textContent = '「' + p.caption + '」'; el.style.display = 'block'; }
+    else { el.textContent = ''; el.style.display = 'none'; }
+  }
+
   // ═══════════ ハート ═══════════
   function syncLike(p) {
     const b = document.getElementById('lb-like');
-    b.classList.toggle('ro', !!p.mine);                 // 自分の写真には押せない
+    const hint = document.getElementById('lb-hint');
+    // 自分の写真には押せない。他人の写真でも持ち数が尽きたら押せない
+    const spent = !p.mine && !p.likedByMe && likesLeft() <= 0;
+    b.classList.toggle('ro', !!p.mine || spent);
     b.classList.toggle('on', !p.mine && !!p.likedByMe);
     document.getElementById('lb-n').textContent = p.likes || 0;
+    hint.textContent = p.mine
+      ? 'もらったハートの数です'
+      : (spent ? 'ハートを使いきりました（取り消すと戻ります）'
+               : `おくれるハート のこり ${likesLeft()}`);
   }
 
   async function toggleLike() {
@@ -675,8 +940,14 @@
     if (!p || p.mine || likeBusy) return;
 
     const next = !p.likedByMe;
+    if (next && likesLeft() <= 0) {
+      toast(`ハートは ${MAX_LIKES} つまでです`);
+      return;
+    }
+
     p.likedByMe = next;
     p.likes = Math.max(0, (p.likes || 0) + (next ? 1 : -1));
+    myLikes += next ? 1 : -1;        // 取り消すと持ち数は戻る
     syncLike(p);
     if (next) {
       const b = document.getElementById('lb-like');
@@ -694,6 +965,7 @@
     } catch(e) {
       p.likedByMe = !next;
       p.likes = Math.max(0, (p.likes || 0) + (next ? -1 : 1));
+      myLikes -= next ? 1 : -1;
       syncLike(p);
       toast('うまく送れませんでした');
     } finally { likeBusy = false; }
@@ -785,6 +1057,8 @@
   }
 
   const HEART = `<svg class="ico" width="11" height="9.6" viewBox="0 0 8 7" aria-hidden="true"><path d="M1 0h2v1h-2zM5 0h2v1h-2zM0 1h8v1h-8zM0 2h8v1h-8zM0 3h8v1h-8zM1 4h6v1h-6zM2 5h4v1h-4zM3 6h2v1h-2z"/></svg>`;
+  const BUBBLE = `<svg class="ico" width="10" height="7.5" viewBox="0 0 8 6" aria-hidden="true"><path d="M0 0h8v1h-8zM0 1h1v1h-1zM7 1h1v1h-1zM0 2h1v1h-1zM7 2h1v1h-1zM0 3h8v1h-8zM1 4h2v1h-2zM1 5h1v1h-1z"/></svg>`;
+  const CROWN = `<svg class="ico" width="13" height="8.7" viewBox="0 0 9 6" aria-hidden="true"><path d="M0 0h1v1h-1zM4 0h1v1h-1zM8 0h1v1h-1zM0 1h1v1h-1zM3 1h3v1h-3zM8 1h1v1h-1zM0 2h1v1h-1zM2 2h5v1h-5zM8 2h1v1h-1zM0 3h9v1h-9zM0 4h9v1h-9zM1 5h7v1h-7z"/></svg>`;
 
   // ═══════════ 紙ふぶき ═══════════
   (function confetti() {
@@ -806,6 +1080,10 @@
       wrap.appendChild(el);
     }
   })();
+
+  document.getElementById('cap-in').addEventListener('input', () => clearTimeout(capTimer));
+  document.getElementById('cap-in').addEventListener('keydown', e => { if (e.key === 'Enter') sendCapBar(); });
+  document.getElementById('cap-in2').addEventListener('keydown', e => { if (e.key === 'Enter') saveCapModal(); });
 
   boot();
 </script>
