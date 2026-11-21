@@ -123,7 +123,12 @@
     border: 3px solid var(--ink); outline: none; margin-bottom: 10px;
   }
   .name-in:focus { box-shadow: 4px 4px 0 var(--gold); }
-  .name-note { font-size: 11px; color: var(--mid); line-height: 1.9; text-align: center; margin-bottom: 22px; }
+  .name-note {
+    font-size: 11px; color: var(--ink2); line-height: 1.9; text-align: center;
+    margin-bottom: 22px; padding: 10px 12px; background: rgba(255,255,255,.86); border: 2px solid var(--pale2);
+  }
+  .name-note b { color: #C4555E; }
+  .name-note hr { border: none; border-top: 2px dotted var(--pale2); margin: 8px 0; }
 
   /* ───── ひとこと ───── */
   .note {
@@ -369,7 +374,11 @@
       </div>
       <input class="name-in" id="name-in" type="text" maxlength="12"
              placeholder="れい：たなか ゆうこ" autocomplete="name" enterkeyhint="done">
-      <div class="name-note">ニックネームでも大丈夫です（12文字まで）<br>あとから変更できないのでご注意ください</div>
+      <div class="name-note">
+        おなまえが同じ方がいると、どちらが撮った写真か分からなくなります。<b>フルネーム</b>や、かぶらない<b>ニックネーム</b>でお願いします。
+        <hr>
+        あとから変更できません（12文字まで）
+      </div>
       <button class="btn" id="name-go" onclick="askName()" disabled>はじめる</button>
     </div>
   </div>
@@ -516,7 +525,7 @@
   <div class="modal-in">
     <div class="modal-l">このおなまえで登録します</div>
     <div class="modal-n" id="m-name-v">—</div>
-    <div class="modal-t">おなまえは<b>あとから変更できません</b>。<br>撮った写真にこのおなまえが表示されます。</div>
+    <div class="modal-t">おなまえは<b>あとから変更できません</b>。<br>撮った写真にこのおなまえが表示されます。<br>ほかの方とかぶっていないかご確認ください。</div>
     <div class="modal-b">
       <button class="btn sub" onclick="closeNameModal()">書き直す</button>
       <button class="btn" onclick="confirmName()">これでOK</button>
