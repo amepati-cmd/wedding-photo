@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<title>Wedding Photo</title>
+<title>PASHARI｜Saaya &amp; Toshiki</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DotGothic16&family=Silkscreen:wght@400;700&display=swap">
@@ -115,7 +115,21 @@
 
   /* ───── 名前入力 ───── */
   .name-wrap { padding-block: 32px 40px; display: flex; flex-direction: column; align-items: center; min-height: 100%; justify-content: center; }
-  .name-h { font-family: var(--dp); font-size: 22px; letter-spacing: 2px; margin-bottom: 14px; }
+  .app-logo {
+    background: var(--white); border: 3px solid var(--ink); box-shadow: 6px 6px 0 var(--ink);
+    padding: 15px 24px 12px; margin-bottom: 16px; text-align: center;
+  }
+  .app-name { font-family: var(--dp); font-weight: 700; font-size: 30px; letter-spacing: 3px; line-height: 1.1; }
+  .app-kana {
+    font-size: 10.5px; letter-spacing: 3px; color: var(--mid);
+    margin-top: 9px; padding-top: 8px; border-top: 2px dotted var(--pale2);
+  }
+  .app-desc {
+    font-size: 12.5px; line-height: 2; text-align: center; color: var(--ink2);
+    background: rgba(255,255,255,.86); border: 2px solid var(--pale2);
+    padding: 11px 13px; margin-bottom: 20px;
+  }
+  .app-desc b { color: #C4555E; }
   .name-lead { font-size: 13px; line-height: 2.1; text-align: center; color: var(--ink2); margin-bottom: 24px; }
   .name-in {
     width: 100%; padding: 14px; font-size: 18px; text-align: center;
@@ -362,16 +376,20 @@
 <!-- ═══ 名前入力 ═══ -->
 <div id="screen-name" class="screen">
   <div class="hdr">
-    <div class="hdr-t">WEDDING PHOTO</div>
+    <div class="hdr-t">PASHARI</div>
     <div class="hdr-s">SAAYA &amp; TOSHIKI</div>
   </div>
   <div class="scroll">
     <div class="name-wrap">
-      <div class="name-h">WELCOME</div>
-      <div class="name-lead">
-        はじめにお名前を教えてください。<br>
-        撮った写真がどなたのものか<br>分かるようになります。
+      <div class="app-logo">
+        <div class="app-name">PASHARI</div>
+        <div class="app-kana">パシャリ v1.0</div>
       </div>
+      <div class="app-desc">
+        会場で見つけた好きなシーンを、スマホで<b>パシャリ</b>。<br>
+        撮った写真はぜんぶ1か所に集まって、<br>あとからみんなで見られます。
+      </div>
+      <div class="name-lead">はじめにお名前を教えてください</div>
       <input class="name-in" id="name-in" type="text" maxlength="12"
              placeholder="れい：たなか ゆうこ" autocomplete="name" enterkeyhint="done">
       <div class="name-note">
@@ -387,7 +405,7 @@
 <!-- ═══ ウェルカム ═══ -->
 <div id="screen-welcome" class="screen">
   <div class="hdr">
-    <div class="hdr-t">WEDDING PHOTO</div>
+    <div class="hdr-t">PASHARI</div>
     <div class="hdr-s">SAAYA &amp; TOSHIKI</div>
   </div>
   <div class="bunting" aria-hidden="true"></div>
